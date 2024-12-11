@@ -1,5 +1,3 @@
-// models/workModel.js
-
 const mongoose = require("mongoose");
 const Sequence = require("./sequenceModel");
 let Schema = mongoose.Schema;
@@ -51,7 +49,6 @@ workSchema.pre("save", function (next) {
 });
 
 const Work = mongoose.model("Work", workSchema);
-
 module.exports = {
   Work,
 };
