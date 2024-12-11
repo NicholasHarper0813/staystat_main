@@ -1,6 +1,5 @@
 const { Work } = require("../models/workModel");
 const { User } = require("../models/userModel");
-
 const createWork = async (req, res) => {
   const workCount = await Work.countDocuments();
 
@@ -8,6 +7,7 @@ const createWork = async (req, res) => {
     res.status(201).json({ error: "You are not authorized to create a work" });
     return;
   }
+  
   const { userName, workDetails, finishDeadline, serialNumber, remarks } =
     req.body;
   try {
@@ -24,6 +24,7 @@ const createWork = async (req, res) => {
       res.status(400).json({ message: "Work not created", work: {} });
       return;
     }
+    
     const populatedWork = await Work.findById(newWork._id).populate([
       {
         path: "userName",
@@ -39,7 +40,8 @@ const createWork = async (req, res) => {
       message: "Work created successfully",
       work: populatedWork,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Create Work error:", error);
     res.status(500).json({
       message: "An error occurred while creating the work",
@@ -61,6 +63,7 @@ const updateWork = async (req, res) => {
       },
       { new: true }
     );
+    
     const populatedWork = await Work.findById(updatedWork._id).populate([
       {
         path: "userName",
@@ -81,7 +84,8 @@ const updateWork = async (req, res) => {
       message: "Work updated successfully",
       work: populatedWork,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Update Work error:", error);
     res.status(500).json({
       message: "An error occurred while updating the work",
@@ -102,6 +106,7 @@ const updateWorkStatus = async (req, res) => {
       },
       { new: true }
     );
+    
     const populatedWork = await Work.findById(updatedWork._id).populate([
       {
         path: "userName",
@@ -122,7 +127,8 @@ const updateWorkStatus = async (req, res) => {
       message: "Work updated successfully",
       work: populatedWork,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Update Work error:", error);
     res.status(500).json({
       message: "An error occurred while updating the work",
@@ -141,7 +147,8 @@ const deleteWork = async (req, res) => {
     }
 
     res.status(200).json({ message: "Work deleted successfully" });
-  } catch (error) {
+  }
+  catch (error) {
     console.error("Delete Work error:", error);
     res.status(500).json({
       message: "An error occurred while deleting the work",
@@ -150,27 +157,6 @@ const deleteWork = async (req, res) => {
 };
 
 const getAllWorks = async (req, res) => {
-
-
-  // async function updateSerialNumbers() {
-  //   try {
-  //     const users = await Work.find().sort({ createdAt: 1 }); // Sort by creation date in ascending order
-
-  //     // Update serial numbers
-  //     for (let i = 0; i < users.length; i++) {
-  //       const user = users[i];
-  //       user.serialNumber = i + 1;
-  //       await user.save();
-  //     }
-
-  //     console.log('Serial numbers updated successfully.');
-  //   } catch (error) {
-  //     console.error('Error updating serial numbers:', error);
-  //   }
-  // }
-  // await updateSerialNumbers();
-
-
   let { page, limit, sortBy, sortOrder, location, addedByMe } = req.query;
   page = parseInt(page) ?? 1;
   limit = parseInt(limit) ?? 10;
@@ -192,9 +178,9 @@ const getAllWorks = async (req, res) => {
       ]);
     const totalWorks = await Work.countDocuments();
     res.status(200).json({ works, worksCount: totalWorks ?? 0 });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Get All Works error:", error);
-
     res.status(500).json({
       message: "An error occurred while fetching all works",
     });
@@ -205,7 +191,6 @@ const getWorksBySearch = async (req, res) => {
   const { query } = req.query;
   try {
     const regex = new RegExp(escapeRegex(query), "gi");
-
     const matchingUserIds = await User.find({
       $or: [{ name: regex }, { username: regex }],
     }).distinct("_id");
@@ -236,13 +221,15 @@ const getWorksBySearch = async (req, res) => {
 
     if (works.length > 0) {
       res.status(200).json({ works });
-    } else {
+    } 
+    else {
       res.status(200).json({
         works: [],
         message: "No result found for this search",
       });
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Get Works by Search error:", error);
     res.status(500).json({
       message: "An error occurred while fetching works by search",
