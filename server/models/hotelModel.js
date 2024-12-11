@@ -97,5 +97,4 @@ hotelSchema.pre("save", function (next) {
 });
 
 const Hotel = mongoose.model("hotel", hotelSchema);
-
 module.exports = { Hotel };
