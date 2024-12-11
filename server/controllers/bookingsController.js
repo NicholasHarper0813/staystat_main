@@ -12,10 +12,12 @@ const getBooking = async (req, res) => {
     const booking = await Booking.findById(bookingId);
     if (!booking) {
       res.status(200).json({ error: "No booking found", booking: {} });
-    } else {
+    } 
+    else {
       res.status(200).json({ booking });
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Internal server error",
@@ -25,7 +27,8 @@ const getBooking = async (req, res) => {
 
 const saveCustomBookingData = async (req, res) => {
   let notFoundUser = null;
-  try {
+  try 
+  {
     const jsonData = req.body;
 
     if (!jsonData || !Array.isArray(jsonData)) {
@@ -43,9 +46,7 @@ const saveCustomBookingData = async (req, res) => {
     let serialNumber = lastBooking ? parseInt(lastBooking.serialNumber) + 1 : 1;
     const resultData = [];
 
-    // Iterate through each booking data
     for (const bookingData of jsonData) {
-      // Find the hotel by name
       const hotel = await Hotel.findOne({
         hotelName: bookingData["Hotel Name"],
       });
@@ -63,15 +64,10 @@ const saveCustomBookingData = async (req, res) => {
         throw new Error(`User not found for name: ${bookingData["Booked By"]}`);
       }
 
-      // Retrieve hotel ID
       const { _id: hotelId } = hotel;
-
-      // Calculate due amount
       const bookingAmount = parseFloat(bookingData["Booking Amount"]);
       const advanceAmount = parseFloat(bookingData["Advance Amount"]);
       const dueAmount = bookingAmount - advanceAmount;
-
-      // Parse and format the booking data
       const formattedBooking = {
         hotel: hotelId,
         serialNumber: serialNumber.toString(),
@@ -88,13 +84,13 @@ const saveCustomBookingData = async (req, res) => {
         roomCategory: bookingData["Room Category"],
         numberOfRooms: parseInt(bookingData["Number of Rooms"]),
         numberOfPersons: parseInt(bookingData["Number of Person"]),
-        bookingAmount: bookingAmount,
-        advanceAmount: advanceAmount,
-        dueAmount: dueAmount,
         advanceDate: moment(bookingData["Advance Date"], "DD-MM-YYYY").toDate(),
         bookingSource: bookingData["Booking Source"],
         bookingBy: bookingData["Booked By"],
         plan: bookingData["Plan"],
+        bookingAmount: bookingAmount,
+        advanceAmount: advanceAmount,
+        dueAmount: dueAmount,
         contactNumber: bookingData["Guest Contact"],
         remarks: bookingData["Remarks"] || "",
         addedBy: user._id,
@@ -102,9 +98,7 @@ const saveCustomBookingData = async (req, res) => {
         accountType: bookingData["Account Type"] || "",
       };
 
-      // Increment serial number for the next booking
       serialNumber += 1;
-
       resultData.push(formattedBooking);
     }
 
@@ -144,33 +138,32 @@ const getAllBookings = async (req, res) => {
       status,
     } = req.query;
     let { startDate, endDate } = req.body;
-
-    let query_page = parseInt(page) ?? 1;
-    let query_limit = parseInt(limit) ?? 10;
-    console.log(startDate + "startDate");
-
     let skipIndex = (query_page - 1) * query_limit;
     let bookings;
     let filter = {};
-
+    let query_page = parseInt(page) ?? 1;
+    let query_limit = parseInt(limit) ?? 10;
+    
+    console.log(startDate + "startDate");
     if (req.user.role === "SUBADMIN") {
       filter.addedBy = req.user._id;
     }
 
     if (filterBy === "stay") {
       let selectedDate = new Date(startDate);
-
       selectedDate.setHours(6, 30, 0, 0);
-
+      
       filter.checkInDate = { $lte: selectedDate };
       filter.checkOutDate = { $gt: selectedDate };
       console.log(selectedDate + "selectedDate");
+      
       if (
         hotelName !== "undefined" &&
         hotelName !== "null" &&
         hotelName !== "" &&
         hotelName !== "--select--"
-      ) {
+      ) 
+      {
         filter.hotel = hotelName;
       }
     }
@@ -204,6 +197,7 @@ const getAllBookings = async (req, res) => {
         };
       }
     }
+    
     if (
       bookingSource !== "undefined" &&
       bookingSource !== "null" &&
@@ -212,6 +206,7 @@ const getAllBookings = async (req, res) => {
     ) {
       filter.bookingSource = bookingSource;
     }
+    
     if (
       serialNumber !== "undefined" &&
       serialNumber !== "null" &&
@@ -219,9 +214,11 @@ const getAllBookings = async (req, res) => {
     ) {
       filter.serialNumber = serialNumber;
     }
+    
     if (guestName !== "undefined" && guestName !== "null" && guestName !== "") {
       filter.guestName = guestName.toUpperCase();
     }
+    
     if (
       hotelName !== "undefined" &&
       hotelName !== "null" &&
@@ -230,6 +227,7 @@ const getAllBookings = async (req, res) => {
     ) {
       filter.hotel = hotelName;
     }
+    
     if (
       addedBy !== "undefined" &&
       addedBy !== "null" &&
@@ -238,6 +236,7 @@ const getAllBookings = async (req, res) => {
     ) {
       filter.addedBy = addedBy;
     }
+    
     if (
       status !== "undefined" &&
       status !== "null" &&
@@ -246,7 +245,9 @@ const getAllBookings = async (req, res) => {
     ) {
       filter.status = status;
     }
+    
     let bookingsForCalculation;
+    
     if (page && limit) {
       bookingsForCalculation = await Booking.find(filter)
         .sort({ createdAt: -1 }) // Sort by createdAt field in descending order (-1)
@@ -272,7 +273,8 @@ const getAllBookings = async (req, res) => {
         bookings: [],
         bookingsCount: bookingsCount ?? 0,
       });
-    } else {
+    } 
+    else {
       let totalBookingAmt = 0;
       let totalAdvanceAmt = 0;
       let totalDueAmt = 0;
@@ -295,7 +297,8 @@ const getAllBookings = async (req, res) => {
         bookingsForCalculation,
       });
     }
-  } catch (error) {
+  } 
+  catch (error) {
     res.status(500).json({
       message: "Internal server error",
     });
@@ -318,7 +321,6 @@ const getAllBookingsBySearch = async (req, res) => {
     }
 
     const regex = new RegExp(escapeRegex(query), "gi");
-
     const bookings = await Booking.find(filter)
       .or([
         { guestName: regex }, // Search for bookings with guentName matching the provided regex
@@ -345,13 +347,15 @@ const getAllBookingsBySearch = async (req, res) => {
       res
         .status(200)
         .json({ bookings, message: "Bookings fetched successfully" });
-    } else {
+    } 
+    else {
       console.log("No result found for this search");
       res
         .status(200)
         .json({ bookings, message: "No result found for this search" });
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });
     throw new Error(error);
@@ -447,7 +451,6 @@ const updateBooking = async (req, res) => {
       status,
     } = req.body;
     console.log("[update bookings controller]", roomCategory);
-
     console.log(req.body);
 
     const updatedBooking = await Booking.findByIdAndUpdate(
