@@ -3,9 +3,6 @@ const { Hotel } = require("../models/hotelModel");
 const { User } = require("../models/userModel");
 const { Leads } = require("../models/leadModel");
 
-
-
-
 const createLead = async (req, res) => {
   try {
     console.log("Create Lead ===>");
@@ -55,7 +52,8 @@ const createLead = async (req, res) => {
       message: "Lead Created Successfully",
       lead: populatedLeadObject,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("create Lead error ===> ", error);
     res.status(500).json({
       success: false,
@@ -66,27 +64,6 @@ const createLead = async (req, res) => {
 
 const getLeads = async (req, res) => {
   const currentDateTime = new Date();
-
-
-  // async function updateSerialNumbers() {
-  //   try {
-  //     const users = await Leads.find().sort({ createdAt: 1 }); // Sort by creation date in ascending order
-
-  //     // Update serial numbers
-  //     for (let i = 0; i < users.length; i++) {
-  //       const user = users[i];
-  //       user.serialNumber = i + 1;
-  //       await user.save();
-  //     }
-
-  //     console.log('Serial numbers updated successfully.');
-  //   } catch (error) {
-  //     console.error('Error updating serial numbers:', error);
-  //   }
-  // }
-  // await updateSerialNumbers();
-
-  // Some logic to get the user
   try {
     console.log("Get Leads ===>");
     let { page, limit, sortBy, sortOrder, location, addedByMe } = req.query;
@@ -115,11 +92,13 @@ const getLeads = async (req, res) => {
         leadsCount: leadsCount ?? 0,
       });
       return;
-    } else {
+    } 
+    else {
       res.status(200).json({ leads, leadsCount: leadsCount ?? 0 });
       return;
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Something went wrong",
@@ -172,7 +151,8 @@ const updateLead = async (req, res) => {
       message: "Leads updated successfully",
       lead: populatedLeadObject,
     });
-  } catch (error) {
+  } 
+  catch (error) {
     console.log("leads controller update error ===>", error);
     res.status(201).json({ error: error.message });
   }
@@ -199,11 +179,13 @@ const confirmLead = async (req, res) => {
         leads: [],
       });
       return;
-    } else {
+    } 
+    else {
       res.status(200).json({ lead: updatedLead, message: "Lead Confirmed" });
       return;
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.log("Lead Confirm error ===>: ", error);
     res.status(500).json({
       message: "Something went wrong",
@@ -217,12 +199,9 @@ function escapeRegex(text) {
 
 const getLeadsBySearch = async (req, res) => {
   const currentDateTime = new Date();
-
   const { query } = req.query;
-  console.log("[get leads by search controller: ===>]");
   try {
     const regex = new RegExp(escapeRegex(query), "gi");
-    // Fetch user IDs that match the regex pattern
     const matchingUserIds = await User.find({
       $or: [{ name: regex }, { username: regex }],
     }).distinct("_id");
@@ -258,12 +237,14 @@ const getLeadsBySearch = async (req, res) => {
 
     if (leads.length > 0) {
       res.status(200).json({ leads, message: "leads fetched successfully" });
-    } else {
+    } 
+    else {
       res
         .status(200)
         .json({ leads, message: "No result found for this search" });
     }
-  } catch (error) {
+  } 
+  catch (error) {
     console.log("Get leads by search error ===>: ", error);
     res.status(500).json({ error: error.message });
     throw new Error(error);
