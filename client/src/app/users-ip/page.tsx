@@ -1,33 +1,33 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Select from "react-select";
-import Table from "@/components/Table/Table";
-import InputEmp from "@/components/card/InputEmp";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "@/utils/axios";
-import { FaPlus, FaTimes } from "react-icons/fa";
-import { fetchOwner } from "@/utils";
 import ViewUser from "@/components/card/ViewUsers";
-import { BiLink, BiSearch } from "react-icons/bi";
+import InputEmp from "@/components/card/InputEmp";
+import Table from "@/components/Table/Table";
+import axios from "@/utils/axios";
+import Select from "react-select";
+import { ToastContainer, toast } from "react-toastify";
 import { FcNext, FcPrevious } from "react-icons/fc";
-import { CiSquareRemove } from "react-icons/ci";
+import { BiLink, BiSearch } from "react-icons/bi";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { FaPlus, FaTimes } from "react-icons/fa";
+import { CiSquareRemove } from "react-icons/ci";
+import { useRouter } from "next/navigation";
 import { utils, writeFile } from "xlsx";
+import { fetchOwner } from "@/utils";
+
 import { FRONTEND_URL } from "@/constants/constant";
-import EditUser from "@/components/card/EditUser";
 import ActivityTable from "@/components/Table/ActivityTable";
+import EditUser from "@/components/card/EditUser";
 
 const PAGE_LIMIT = 20;
-
 const Activities = () => {
   let router = useRouter();
   const [owner, setOwner] = useState<any>({});
   const [accountType, setAccountType] = useState<string>("");
   const [activityData, setActivityData] = useState<any>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     let userId = JSON.parse(localStorage.getItem("user") || "{}")?._id;
@@ -48,7 +48,8 @@ const Activities = () => {
           toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      }
+      catch (error: any) {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -60,7 +61,6 @@ const Activities = () => {
 
   const totalActivities = activityData.length;
   const totalPages = Math.ceil(totalActivities / PAGE_LIMIT);
-
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
