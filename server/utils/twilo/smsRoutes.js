@@ -1,7 +1,6 @@
-// smsRoutes.js
 const express = require("express");
-const router = express.Router();
 const client = require("./twilio");
+const router = express.Router();
 
 router.post("/send-sms", async (req, res) => {
   const { to, body } = req.body;
@@ -25,7 +24,8 @@ router.post("/send-sms", async (req, res) => {
     });
 
     res.json({ success: true, messageId: message.sid });
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error sending SMS:", error);
     res
       .status(500)
