@@ -2,26 +2,27 @@
 import React, { useState, useEffect } from "react";
 import HotelTable from "@/components/Table/HotelTable";
 import Select from "react-select";
-import { ToastContainer, toast } from "react-toastify";
 import InputHotel from "@/components/card/InputHotel";
 import ViewHotel from "@/components/card/ViewHotel";
+import EditHotel from "@/components/card/EditHotel";
 import axios from "@/utils/axios";
+import { ToastContainer, toast } from "react-toastify";
+import { FcNext, FcPrevious } from "react-icons/fc";
+import { FRONTEND_URL } from "@/constants/constant";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { BiLink, BiSearch } from "react-icons/bi";
 import { FaPlus, FaTimes } from "react-icons/fa";
-import { fetchOwner } from "@/utils";
+import { CiSquareRemove } from "react-icons/ci";
 import { useRouter } from "next/navigation";
+import { utils, writeFile } from "xlsx";
+import { fetchOwner } from "@/utils";
+
 import {
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
   MdArchive,
   MdClose,
 } from "react-icons/md";
-import { SiMicrosoftexcel } from "react-icons/si";
-import { BiLink, BiSearch } from "react-icons/bi";
-import { FcNext, FcPrevious } from "react-icons/fc";
-import { CiSquareRemove } from "react-icons/ci";
-import { utils, writeFile } from "xlsx";
-import { FRONTEND_URL } from "@/constants/constant";
-import EditHotel from "@/components/card/EditHotel";
 
 const Hotels = () => {
   const router = useRouter();
@@ -77,9 +78,7 @@ const Hotels = () => {
         let { data } = await axios.get(
           `/hotel/get-all-hotels/search?&query=${searchText}`
         );
-        // console.log("users", data);
         if (!data.error) {
-          // setSearchResults(data);
           setHotelData(data.hotels);
         } else {
           toast.error(data.error);
@@ -97,7 +96,6 @@ const Hotels = () => {
         const { data } = await axios.post(
           `/hotel/get-all-hotels?page=${page}&limit=${PAGE_LIMIT}`
         );
-        // console.log(data);
         if (!data.error) {
           setHotelData(data.hotels);
           setHotelsCount(data.hotelsCount);
@@ -176,7 +174,6 @@ const Hotels = () => {
     const getHotelsForDownload = async () => {
       try {
         const { data } = await axios.post(`/hotel/get-all-hotels`);
-        // console.log(data);
         if (!data.error) {
           return data.hotels;
         } else {
