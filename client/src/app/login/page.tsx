@@ -7,9 +7,9 @@ type Props = {};
 
 const LoginPage = (props: Props) => {
   let router = useRouter();
-  // @ts-ignore
   let user = JSON.parse(localStorage.getItem("user"));
-  if (user && user._id) {
+  if (user && user._id)
+  {
     return router?.replace("/");
   }
 
