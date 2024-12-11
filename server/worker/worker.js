@@ -1,17 +1,17 @@
 const axios = require("axios");
 const cron = require("node-cron");
+const jwt = require("jsonwebtoken");
 const { Booking } = require("../models/bookingModel");
 const { Hotel } = require("../models/hotelModel");
 const { User } = require("../models/userModel");
 const Sequence = require("../models/sequenceModel");
-const jwt = require("jsonwebtoken");
 
 const secretKey = process.env.JWT_WORKER_SECRET;
 const workerBaseUrl = process.env.BASE_URL_WORKER;
-
 const getJwtToken = () => {
   return jwt.sign({ secretKey }, secretKey, { expiresIn: "5m" });
 };
+
 const startBookingCronJob = () => {
   cron.schedule("0 */6 * * *", async () => {
     console.log("Booking cron job started");
@@ -23,7 +23,8 @@ const startBookingCronJob = () => {
         },
       });
       console.log("Booking data sent successfully");
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Error sending booking data", error);
     }
   });
@@ -40,7 +41,8 @@ const startHotelCronJob = () => {
         },
       });
       console.log("Hotel data sent successfully");
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Error sending hotel data", error);
     }
   });
@@ -56,7 +58,8 @@ const startUserCronJob = () => {
         },
       });
       console.log("User data sent successfully");
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Error sending user data", error);
     }
   });
@@ -72,11 +75,13 @@ const startSequenceCronJob = () => {
         },
       });
       console.log("Sequence data sent successfully");
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error sending sequence data", error);
     }
   });
 };
+
 module.exports = {
   startBookingCronJob,
   startHotelCronJob,
