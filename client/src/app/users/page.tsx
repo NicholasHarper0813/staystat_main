@@ -1,22 +1,25 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Select from "react-select";
-import Table from "@/components/Table/Table";
-import InputEmp from "@/components/card/InputEmp";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "@/utils/axios";
-import { FaPlus, FaTimes } from "react-icons/fa";
-import { fetchOwner } from "@/utils";
+
 import ViewUser from "@/components/card/ViewUsers";
-import { BiLink, BiSearch } from "react-icons/bi";
-import { FcNext, FcPrevious } from "react-icons/fc";
-import { CiSquareRemove } from "react-icons/ci";
-import { SiMicrosoftexcel } from "react-icons/si";
-import { utils, writeFile } from "xlsx";
-import { FRONTEND_URL } from "@/constants/constant";
 import EditUser from "@/components/card/EditUser";
+import InputEmp from "@/components/card/InputEmp";
+import Table from "@/components/Table/Table";
+import Select from "react-select";
+import axios from "@/utils/axios";
+
+import { ToastContainer, toast } from "react-toastify";
+import { FcNext, FcPrevious } from "react-icons/fc";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { BiLink, BiSearch } from "react-icons/bi";
+import { FaPlus, FaTimes } from "react-icons/fa";
+import { CiSquareRemove } from "react-icons/ci";
+import { useRouter } from "next/navigation";
+import { utils, writeFile } from "xlsx";
+import { fetchOwner } from "@/utils";
+
+import { FRONTEND_URL } from "@/constants/constant";
 
 const Users = () => {
   let router = useRouter();
@@ -26,22 +29,22 @@ const Users = () => {
   const [owner, setOwner] = useState<any>({});
   const [accountType, setAccountType] = useState<string>("");
   const [userData, setUserData] = useState<any>([]);
-  const [usersCount, setUsersCount] = useState<number>(0);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [user, setUser] = useState<object>({});
-  const [showViewModal, setShowViewModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [reloadData, setReloadData] = useState<boolean>(false);
   const [showDownloadPopUp, setShowDownloadPopUp] = useState<boolean>(false);
   const [downloading, setDownloading] = useState<boolean>(false);
-
+  const [usersCount, setUsersCount] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [user, setUser] = useState<object>({});
+  const [showViewModal, setShowViewModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [editingUserData, setEditingUserData] = useState<any>({});
 
   useEffect(() => {
     if (showModal || showViewModal) {
       document.body.style.overflow = "hidden";
-    } else {
+    } 
+    else {
       document.body.style.overflow = "unset";
     }
   }, [showViewModal, showModal]);
@@ -58,7 +61,9 @@ const Users = () => {
         setOwner(user);
         localStorage.setItem("user", JSON.stringify(user));
         setAccountType(user?.role);
-      } else {
+      } 
+      else
+      {
         toast.error("You are not authorized to view this page");
         localStorage.removeItem("user");
         window.open(`${FRONTEND_URL}/login`, "_self");
@@ -74,15 +79,14 @@ const Users = () => {
         let { data } = await axios.get(
           `/user/get-users/search?&query=${searchText}`
         );
-        // console.log("forms", data);
         if (!data.error) {
-          // setSearchResults(data);
           setUserData(data.users);
         } else {
           toast.error(data.error);
         }
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.log("Error getting forms", error);
     }
   };
@@ -94,15 +98,17 @@ const Users = () => {
         const { data } = await axios.get(
           `/user/get-users?page=${page}&limit=${PAGE_LIMIT}`
         );
-        // console.log(data);
         if (!data.error) {
           setUserData(data.users);
           setUsersCount(data.usersCount);
-        } else {
+        } 
+        else {
           toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      }
+      catch (error: any) 
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -125,13 +131,16 @@ const Users = () => {
         if (!data.error) {
           setUserData(users.users);
           setUsersCount(users.usersCount);
-        } else {
+        } 
+        else {
           toast.error(data.error);
         }
-      } else {
+      } 
+      else {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any) {
       toast.error(error.message);
       console.log(error);
     }
@@ -150,13 +159,16 @@ const Users = () => {
         if (!data.error) {
           setUserData(users.users);
           setUsersCount(users.usersCount);
-        } else {
+        } 
+        else {
           toast.error(data.error);
         }
-      } else {
+      } 
+      else {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any) {
       toast.error(error.message);
       console.log(error);
     }
@@ -166,14 +178,15 @@ const Users = () => {
     const getUsersForDownload = async () => {
       try {
         const { data } = await axios.get(`/user/get-users`);
-        // console.log(data);
         if (!data.error) {
           return data.users;
-        } else {
+        } 
+        else {
           toast.error(data.error);
           return;
         }
-      } catch (error: any) {
+      } 
+      catch (error: any) {
         toast.error(error.message);
         console.log(error);
       }
