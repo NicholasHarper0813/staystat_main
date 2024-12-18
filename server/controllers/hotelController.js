@@ -3,18 +3,22 @@ const { User } = require("../models/userModel");
 
 const getHotel = async (req, res) => {
   const { hotelId } = req.body;
-  try {
+  try 
+  {
     const hotel = await Hotel.findById(hotelId);
-    if (!hotel) {
+    if (!hotel) 
+    {
       res.status(200).json({ error: "No hotel found", hotel: {} });
       return;
     } 
-    else {
+    else 
+    {
       res.status(200).json({ hotel });
       return;
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Internal server error",
@@ -23,7 +27,8 @@ const getHotel = async (req, res) => {
 };
 
 const getAllHotels = async (req, res) => {
-  try {
+  try
+  {
     console.log("[getAllHotels] controller: =====>");
     let { page, limit, sortBy, sortOrder, location, addedByMe, filterBy } = req.query;
     let query_page = parseInt(page) ?? 1;
@@ -33,7 +38,6 @@ const getAllHotels = async (req, res) => {
 
     const filter = {};
     if (filterBy) {}
-
     if (location) { filter.location = location;}
     if (addedByMe) { filter.addedBy = req.user._id;}
 
@@ -44,23 +48,25 @@ const getAllHotels = async (req, res) => {
       sort[sortBy] = sortOrder === "desc" ? -1 : 1;
     }
 
-    // Fetch hotels with applied filters and sorting
-    if (page && limit) {
+    if (page && limit) 
+    {
       hotels = await Hotel.find(filter)
-        .sort({ createdAt: -1 }) // Sort by createdAt field in descending order (-1)
+        .sort({ createdAt: -1 })
         .skip(skipIndex)
         .limit(query_limit)
         .populate("addedBy");
     } 
-    else {
+    else 
+    {
       hotels = await Hotel.find(filter)
-        .sort({ createdAt: -1 }) // Sort by createdAt field in descending order (-1)
+        .sort({ createdAt: -1 })
         .populate("addedBy");
     }
     let hotelsCount = await Hotel.countDocuments(filter);
     console.timeEnd("get hotels");
     
-    if (!hotels || hotels.length === 0) {
+    if (!hotels || hotels.length === 0) 
+    {
       res.status(200).json({
         error: "No hotels found",
         hotels: [],
@@ -68,12 +74,14 @@ const getAllHotels = async (req, res) => {
       });
       return;
     } 
-    else {
+    else 
+    {
       res.status(200).json({ hotels, hotelsCount: hotelsCount ?? 0 });
       return;
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Internal server error",
@@ -81,13 +89,15 @@ const getAllHotels = async (req, res) => {
   }
 };
 
-function escapeRegex(text) {
+function escapeRegex(text) 
+{
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
 const getAllHotelsBySearch = async (req, res) => {
   const { query } = req.query;
-  try {
+  try 
+  {
     const regex = new RegExp(escapeRegex(query), "gi");
     const hotels = await Hotel.find()
       .or([
@@ -99,17 +109,20 @@ const getAllHotelsBySearch = async (req, res) => {
         { frontOfficeContact: regex },
       ])
       .populate({ path: "addedBy", model: User });
-
-    if (hotels.length > 0) {
+    
+    if (hotels.length > 0) 
+    {
       res.status(200).json({ hotels, message: "Hotels fetched successfully" });
     } 
-    else {
+    else
+    {
       res
         .status(200)
         .json({ hotels, message: "No result found for this search" });
     }
   } 
-  catch (error) {
+  catch (error)
+  {
     console.log(error);
     res.status(500).json({ error: error.message });
     throw new Error(error);
@@ -117,7 +130,8 @@ const getAllHotelsBySearch = async (req, res) => {
 };
 
 const createHotel = async (req, res) => {
-  if (req.user.role !== "ADMIN") {
+  if (req.user.role !== "ADMIN")
+  {
     res.status(201).json({ error: "You are not authorized to create a hotel" });
     return;
   }
@@ -175,7 +189,8 @@ const createHotel = async (req, res) => {
       .status(200)
       .json({ message: "Hotel created successfully", hotel: newHotel });
   } 
-  catch (error) {
+  catch (error)
+  {
     console.log("Error: ", error);
     res.status(500).json({ error: error.message });
   }
@@ -183,10 +198,12 @@ const createHotel = async (req, res) => {
 
 const updateHotelStatus = async (req, res) => {
   const { id } = req.body;
-  try {
+  try 
+  {
     console.log("[updateuser controller]");
     const updatedHotel = await Hotel.findById(id);
-    if (!updatedHotel) {
+    if (!updatedHotel) 
+    {
       return res.status(404).json({ error: "Hotel not found" });
     }
     updatedHotel.isActive = !updatedHotel.isActive;
@@ -195,14 +212,16 @@ const updateHotelStatus = async (req, res) => {
       .status(200)
       .json({ message: "Hotel updated successfully", hotel: updatedHotel });
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("[user controller update error:]", error);
     res.status(201).json({ error: error.message });
   }
 };
 
 const updateHotel = async (req, res) => {
-  const {
+  const 
+  {
     id,
     ownerName,
     hotelName,
@@ -219,7 +238,8 @@ const updateHotel = async (req, res) => {
     accountNumber,
     ifscCode,
   } = req.body;
-  try {
+  try 
+  {
     console.log("[updateuser controller]");
     const updatedHotel = await Hotel.findByIdAndUpdate(
       id,
@@ -239,35 +259,39 @@ const updateHotel = async (req, res) => {
         accountNumber,
         ifscCode,
       },
-      { new: true } // This option returns the updated document after the update is applied
+      { new: true }
     );
 
-    if (!updatedHotel) {
+    if (!updatedHotel) 
+    {
       return res.status(404).json({ error: "Hotel not found" });
     }
-
     res
       .status(200)
       .json({ message: "Hotel updated successfully", user: updatedHotel });
   } 
-  catch (error) {
+  catch (error)
+  {
     console.log("[user controller update error:]", error);
     res.status(201).json({ error: error.message });
   }
 };
 
 const deleteHotel = async (req, res) => {
-  try {
+  try
+  {
     const { id } = req.body;
     let hotelAddedBy = await Hotel.findById(id);
     hotelAddedBy = hotelAddedBy.addedBy;
     console.log("hotel added by: ", hotelAddedBy);
     const deletedHotel = await Hotel.findByIdAndDelete(id);
-    if (!deletedHotel) {
+    if (!deletedHotel)
+    {
       res.status(200).json({ error: "No hotel found" });
       return;
     } 
-    else {
+    else 
+    {
       let updatedUser = await User.updateMany(
         { role: "ADMIN" },
         {
@@ -282,7 +306,8 @@ const deleteHotel = async (req, res) => {
       }
     }
   } 
-  catch (error) {
+  catch (error)
+  {
     console.log("[hotel controller ]: ", error);
     res.status(201).json({ error: error.message });
   }
