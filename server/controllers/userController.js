@@ -48,28 +48,32 @@ const sendEmail = async (
     };
 
     const result = await transport.sendMail(mailOptions);
-
     return result;
   } 
-  catch (error) {
+  catch (error)
+  {
     console.log("Error in sendEmail ===> ", error);
   }
 };
 
 const getAllUsers = async (req, res) => {
-  try {
+  try 
+  {
     console.log("getAllUsers");
     const users = await User.find();
-    if (!users) {
+    if (!users)
+    {
       res.status(200).json({ error: "No users found", users: [] });
       return;
     }
-    else {
+    else
+    {
       res.status(200).json({ users });
       return;
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Internal server error",
@@ -78,13 +82,15 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  try {
+  try 
+  {
     console.log("getUser");
     const user = await User.findById(req.body.id).populate({
       path: "hotel",
       model: Hotel,
     });
-    if (!user) {
+    if (!user) 
+    {
       res.status(200).json({ error: "No user found", user: {} });
       return;
     } 
@@ -93,7 +99,8 @@ const getUser = async (req, res) => {
       return;
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Internal server error",
@@ -102,7 +109,8 @@ const getUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  try {
+  try 
+  {
     console.log("getUsers");
     let { page, limit, sortBy, sortOrder, location, addedByMe } = req.query;
     let query_page = parseInt(page) ?? 1;
@@ -110,16 +118,17 @@ const getUsers = async (req, res) => {
     let skipIndex = (query_page - 1) * query_limit;
     let users;
     
-    if (page && limit) {
+    if (page && limit)
+    {
       users = await User.find({ role: "SUBADMIN" })
-        .sort({ createdAt: -1 }) // Sort by createdAt field in descending order (-1)
+        .sort({ createdAt: -1 })
         .skip(skipIndex)
         .limit(query_limit)
         .populate({ path: "hotel", model: Hotel });
     } 
     else {
       users = await User.find({ role: "SUBADMIN" })
-        .sort({ createdAt: -1 }) // Sort by createdAt field in descending order (-1)
+        .sort({ createdAt: -1 })
         .populate({ path: "hotel", model: Hotel });
     }
 
@@ -157,16 +166,18 @@ const getUsersBySearch = async (req, res) => {
     const regex = new RegExp(escapeRegex(query), "gi");
     const users = await User.find()
       .or([
-        { name: regex }, // Search for forms with name matching the provided regex
-        { email: regex }, // Search for forms with email matching the provided regex
-        { username: regex }, // Search for forms with username matching the provided regex
+        { name: regex },
+        { email: regex },
+        { username: regex },
       ])
       .populate({ path: "hotel", model: Hotel });
 
-    if (users.length > 0) {
+    if (users.length > 0)
+    {
       res.status(200).json({ users, message: "Users fetched successfully" });
     } 
-    else {
+    else 
+    {
       res
         .status(200)
         .json({ users, message: "No result found for this search" });
@@ -182,7 +193,8 @@ const getUsersBySearch = async (req, res) => {
 const createUser = async (req, res) => {
   let { name, username, password, email, phoneNumber, role, hotel } = req.body;
 
-  try {
+  try 
+  {
     const usersCount = await User.countDocuments();
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
@@ -220,9 +232,11 @@ const createUser = async (req, res) => {
       .status(200)
       .json({ message: "User created successfully", user: populatedUser });
   }
-  catch (error) {
+  catch (error)
+  {
     console.log("[user controller error:]", error);
-    if (error.code === 11000) {
+    if (error.code === 11000) 
+    {
       res.status(201).json({ error: "Username already exists" });
       return;
     }
@@ -231,18 +245,23 @@ const createUser = async (req, res) => {
 };
 
 const activateDeactiveUser = async (req, res) => {
-  try {
+  try
+  {
     const { id } = req.body;
     const user = await User.findById(id);
-    if (!user) {
+    if (!user) 
+    {
       res.status(200).json({ error: "No user found" });
       return;
     } 
-    else {
-      if (user.isActive) {
+    else 
+    {
+      if (user.isActive)
+      {
         user.isActive = false;
       } 
-      else {
+      else 
+      {
         user.isActive = true;
       }
       await user.save();
@@ -250,7 +269,8 @@ const activateDeactiveUser = async (req, res) => {
       return;
     }
   } 
-  catch (error) {
+  catch (error)
+  {
     console.log("[user controller activation error:]", error);
     res.status(201).json({ error: error.message });
   }
@@ -258,7 +278,8 @@ const activateDeactiveUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { id, phoneNumber, hotel, username, name, email, password } = req.body;
-  try {
+  try 
+  {
     console.log("[updateuser controller]");
     if (password === null || password === undefined || password === "") {
       const updatedUser = await User.findByIdAndUpdate(
@@ -272,7 +293,8 @@ const updateUser = async (req, res) => {
         model: Hotel,
       });
 
-      if (!updatedUser) {
+      if (!updatedUser) 
+      {
         return res.status(404).json({ error: "User not found" });
       }
 
@@ -291,7 +313,8 @@ const updateUser = async (req, res) => {
         .status(200)
         .json({ message: "User updated successfully", user: populatedUser });
     } 
-    else {
+    else 
+    {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       const updatedUser = await User.findByIdAndUpdate(
@@ -305,7 +328,8 @@ const updateUser = async (req, res) => {
         model: Hotel,
       });
 
-      if (!updatedUser) {
+      if (!updatedUser) 
+      {
         return res.status(404).json({ error: "User not found" });
       }
       const subject = "STAY STATS ADMIN PANEL - Account Updated";
@@ -323,26 +347,30 @@ const updateUser = async (req, res) => {
         .json({ message: "User updated successfully", user: populatedUser });
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("[user controller update error:]", error);
     res.status(201).json({ error: error.message });
   }
 };
 
 const deleteUser = async (req, res) => {
-  try {
+  try 
+  {
     const { id } = req.body;
     const deletedUser = await User.findByIdAndDelete(id);
     if (!deletedUser) {
       res.status(200).json({ message: "No user found" });
       return;
     }
-    else {
+    else 
+    {
       res.status(200).json({ message: "User deleted successfully" });
       return;
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("[user controller deletion error:]", error);
     res.status(201).json({ error: error.message });
   }
