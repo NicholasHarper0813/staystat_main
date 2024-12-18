@@ -4,9 +4,11 @@ const { User } = require("../models/userModel");
 const { Leads } = require("../models/leadModel");
 
 const createLead = async (req, res) => {
-  try {
+  try 
+  {
     console.log("Create Lead ===>");
-    const {
+    const 
+    {
       guestName,
       checkInDate,
       checkOutDate,
@@ -43,7 +45,8 @@ const createLead = async (req, res) => {
       select: "name email username ",
     });
 
-    if (!savedLead) {
+    if (!savedLead)
+    {
       res.status(201).json({ message: "Lead not created", lead: {} });
       return;
     }
@@ -53,7 +56,8 @@ const createLead = async (req, res) => {
       lead: populatedLeadObject,
     });
   } 
-  catch (error) {
+  catch (error)
+  {
     console.error("create Lead error ===> ", error);
     res.status(500).json({
       success: false,
@@ -64,7 +68,8 @@ const createLead = async (req, res) => {
 
 const getLeads = async (req, res) => {
   const currentDateTime = new Date();
-  try {
+  try
+  {
     console.log("Get Leads ===>");
     let { page, limit, sortBy, sortOrder, location, addedByMe } = req.query;
     page = parseInt(page) ?? 1;
@@ -85,7 +90,8 @@ const getLeads = async (req, res) => {
 
     let leadsCount = await Leads.countDocuments({ isCancelled: false });
 
-    if (!leads) {
+    if (!leads)
+    {
       res.status(200).json({
         error: "No leads found",
         leads: [],
@@ -93,12 +99,14 @@ const getLeads = async (req, res) => {
       });
       return;
     } 
-    else {
+    else
+    {
       res.status(200).json({ leads, leadsCount: leadsCount ?? 0 });
       return;
     }
   } 
-  catch (error) {
+  catch (error)
+  {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Something went wrong",
@@ -107,7 +115,8 @@ const getLeads = async (req, res) => {
 };
 
 const updateLead = async (req, res) => {
-  const {
+  const 
+  {
     id,
     guestName,
     checkInDate,
@@ -119,7 +128,8 @@ const updateLead = async (req, res) => {
     budget,
     specialRequirements,
   } = req.body;
-  try {
+  try 
+  {
     console.log("update lead controller===>");
     const updatedLead = await Leads.findByIdAndUpdate(
       id,
@@ -134,10 +144,11 @@ const updateLead = async (req, res) => {
         budget,
         specialRequirements,
       },
-      { new: true } // This option returns the updated document after the update is applied
+      { new: true }
     );
 
-    if (!updatedLead) {
+    if (!updatedLead) 
+    {
       return res.status(201).json({ error: "Leads not found" });
     }
 
@@ -152,7 +163,8 @@ const updateLead = async (req, res) => {
       lead: populatedLeadObject,
     });
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("leads controller update error ===>", error);
     res.status(201).json({ error: error.message });
   }
@@ -170,8 +182,6 @@ const confirmLead = async (req, res) => {
       { path: "createdBy", model: User, select: "name email username" },
       { path: "approvedBy", model: User, select: "name email username" },
     ]);
-
-    // Now 'updatedLead' will contain the populated 'createdBy' and 'approvedBy' fields
 
     if (!updatedLead) {
       res.status(200).json({
