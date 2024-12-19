@@ -2,14 +2,15 @@
 import axios from "@/utils/axios";
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from "react";
+import generator from "generate-password";
+import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { MdAutoFixHigh } from "react-icons/md";
-import generator from "generate-password";
-import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 
-interface Props {
+interface Props 
+{
   setUserData: (users: any) => void;
   onClose: (value: boolean) => void;
 }
@@ -21,27 +22,27 @@ const InputEmp = ({ setUserData, onClose }: Props) => {
   const [availableHotels, setAvailableHotels] = useState<any>([]);
   const [selectedHotels, setSelectedHotels] = useState<any>([]);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
   const [reactSelectOptions, setReactSelectOptions] = useState<any>([]);
-
   const [inputPassword, setInputPassword] = useState<string>("");
 
   useEffect(() => {
     const getHotels = async () => {
       setLoading(true);
-      try {
+      try 
+      {
         const { data } = await axios.post("/hotel/get-all-hotels");
-        if (!data.error) {
+        if (!data.error) 
+        {
           setAvailableHotels(data.hotels);
           let options = data.hotels.map((hotel: any) => {
             return { value: hotel._id, label: hotel.hotelName };
           });
           setReactSelectOptions(options);
-        } else {
-          // toast.error(data.error);
-        }
+        } 
         setLoading(false);
-      } catch (error: any) {
+      }
+      catch (error: any) 
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -71,7 +72,6 @@ const InputEmp = ({ setUserData, onClose }: Props) => {
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
       if (formValues[key].trim() === "") {
@@ -84,34 +84,35 @@ const InputEmp = ({ setUserData, onClose }: Props) => {
     const nameRegex = /^[a-zA-Z ]+$/;
     const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if (
-      formValues.password.trim() === "" ||
+    if ( formValues.password.trim() === "" ||
       formValues.first_name.trim() === "" ||
-      formValues.email.trim() === ""
-    ) {
+      formValues.email.trim() === "") 
+    {
       toast.error("Please fill all the fields");
       return;
     }
 
-    if (formValues.phone.length !== 10) {
+    if (formValues.phone.length !== 10)
+    {
       toast.error("Please enter a valid phone number and don't include +91");
       return;
     }
 
-    if (
-      formValues.first_name.trim() == "" ||
-      !nameRegex.test(formValues.first_name)
-    ) {
+    if (formValues.first_name.trim() == "" ||
+      !nameRegex.test(formValues.first_name))
+    {
       toast.error("Please enter a valid name");
       return;
     }
 
-    if (formValues.email.trim() == "" || !emailRegex.test(formValues.email)) {
+    if (formValues.email.trim() == "" || !emailRegex.test(formValues.email))
+    {
       toast.error("Please enter a valid email");
       return;
     }
 
-    try {
+    try 
+    {
       setLoading(true);
       const { data } = await axios.post("/user/create-user", {
         name: formValues.first_name,
@@ -122,8 +123,8 @@ const InputEmp = ({ setUserData, onClose }: Props) => {
         hotel: selectedHotels.map((hotel: any) => hotel.value),
         role: "SUBADMIN",
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error) 
+      {
         setUserData((prev: any) => {
           return [data.user, ...prev];
         });
@@ -131,11 +132,15 @@ const InputEmp = ({ setUserData, onClose }: Props) => {
 
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      }
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any)
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
@@ -197,7 +202,6 @@ const InputEmp = ({ setUserData, onClose }: Props) => {
             id="phone"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             
-            // pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
             required
           />
         </div>
@@ -289,15 +293,6 @@ const InputEmp = ({ setUserData, onClose }: Props) => {
       >
         {loading ? 'Please Wait..': 'Submit'}
       </button>
-      {/* <button
-        type="reset"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50"
-        disabled={
-          loading || availableHotels.length === 0 || selectedHotels.length === 0
-        }
-      >
-       Reset
-      </button> */}
       </TailwindWrapper>
     </form>
   );
