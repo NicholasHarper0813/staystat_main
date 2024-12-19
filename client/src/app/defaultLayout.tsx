@@ -6,53 +6,46 @@ import Sidebar from "@/components/navbar/Sidebar";
 import LoginForm from "@/components/login";
 import LoadingSpinner from "@/components/loadingSpinner/LoadingSpinner";
 import MobileBottomNavbar from "@/components/navbar/MobileSidebar";
-import { usePathname, useRouter } from "next/navigation";
-import { FRONTEND_URL } from "@/constants/constant";
 import ForgotPasswordRequest from "@/components/ForgotPasswordRequest";
 import ResetPasswordForm from "@/components/ResetPasswordComponent";
+import { usePathname, useRouter } from "next/navigation";
+import { FRONTEND_URL } from "@/constants/constant";
 
 type Props = {};
 
 const DefaultLayout = ({ children }: any) => {
   let router = useRouter();
   let pathName = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   let [user, setUser] = useState({});
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const toggleSidebar = () => {
-    // console.log("toggle sidebar");
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   useEffect(() => {
-    // @ts-ignore
-
     let user = JSON.parse(localStorage.getItem("user"));
-    // console.log("user", user);
-    if (!user) {
-    }
-    if (user && user._id && user.isActive) {
+    if (!user) {}
+    if (user && user._id && user.isActive) 
+    {
       setUser(user);
       setLoading(false);
-    } else {
+    }
+    else
+    {
       setLoading(false);
     }
   }, []);
-  if (loading) {
+  if (loading)
+  {
     return <LoadingSpinner />;
   }
-
-  // @ts-ignore
-  // if (!user && !user._id && pathName === "/forgot-password") {
-  //   window.open(`${FRONTEND_URL}/forgot-password`, "_blank");
-  // }
-
+  
   console.log("pathName", pathName);
 
   return (
     <div className="overflow-hidden">
-      {/* @ts-ignore */}
       {user && user._id && user.isActive ? (
         <div className="overflow-hidden max-h-screen ">
           <div className=" lg:block">
@@ -61,9 +54,6 @@ const DefaultLayout = ({ children }: any) => {
               toggleSidebar={toggleSidebar}
             />
           </div>
-          {/* <div className="lg:hidden">
-            <MobileBottomNavbar />
-          </div> */}
           <div className="flex">
             <div className="lg:flex z-50">
               <Sidebar
