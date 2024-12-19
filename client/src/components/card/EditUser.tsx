@@ -29,7 +29,6 @@ const EditUser = ({
   const [editingUserData, setEditingUserData] = useState<any>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [inputPassword, setInputPassword] = useState<string>("");
-
   const [reactSelectOptions, setReactSelectOptions] = useState<any>([]);
 
   useEffect(() => {
@@ -49,11 +48,15 @@ const EditUser = ({
               return { value: hotel._id, label: hotel.hotelName };
             })
           );
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      }
+      catch (error: any) 
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -72,11 +75,12 @@ const EditUser = ({
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
-      if (formValues[key].trim() === "") {
-        if (key !== "password") {
+      if (formValues[key].trim() === "") 
+      {
+        if (key !== "password") 
+        {
           toast.error("Please fill all the fields");
         }
         return;
@@ -87,25 +91,26 @@ const EditUser = ({
     const nameRegex = /^[a-zA-Z ]+$/;
     const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 
-    if (formValues.phone.length !== 10) {
+    if (formValues.phone.length !== 10) 
+    {
       toast.error("Please enter a valid phone number and don't include +91");
       return;
     }
 
-    if (
-      formValues.first_name.trim() == "" &&
-      !nameRegex.test(formValues.first_name)
-    ) {
+    if ( formValues.first_name.trim() == "" && !nameRegex.test(formValues.first_name)) 
+    {
       toast.error("Please enter a valid name");
       return;
     }
 
-    if (formValues.email.trim() == "" && !emailRegex.test(formValues.email)) {
+    if (formValues.email.trim() == "" && !emailRegex.test(formValues.email))
+    {
       toast.error("Please enter a valid email");
       return;
     }
 
-    try {
+    try 
+    {
       setLoading(true);
       const { data } = await axios.post("/user/update-user", {
         id: editingUserData._id,
@@ -115,16 +120,15 @@ const EditUser = ({
         email: formValues.email,
         password: formValues.password !== "" ? formValues.password : null,
         hotel: selectedHotels.map((hotel: any) => hotel.value),
-        // role: "SUBADMIN",
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error) 
+      {
         const userIndex = userData.findIndex(
           (user: any) => user._id === editingUserDataProps._id
         );
 
-        // If the user is found in the array, replace the data at that index
-        if (userIndex !== -1) {
+        if (userIndex !== -1) 
+        {
           setUserData((prev: any) => {
             const updatedUserData = [...prev];
             updatedUserData[userIndex] = data.user;
@@ -135,11 +139,15 @@ const EditUser = ({
         onClose(false);
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      } 
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any)
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
@@ -162,7 +170,6 @@ const EditUser = ({
   };
 
   return (
-
     <form
       ref={formRef}
       className="p-6 items-center rounded-lg shadow md:flex-row md:max-w-xl dark:border-gray-700 w-full"
