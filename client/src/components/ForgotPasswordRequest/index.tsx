@@ -2,17 +2,17 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "@/utils/axios";
 import validator from "validator";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import Image from "next/image";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
 import { motion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
 import { MdOutlineDoneAll } from "react-icons/md";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import { BiError } from "react-icons/bi";
 import { useSearchParams, useRouter } from "next/navigation";
-import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
+import { ToastContainer, toast } from "react-toastify";
 import { BASE_URL, FRONTEND_URL } from "@/constants/constant";
 const AnimatedImage = motion(Image);
 
@@ -20,39 +20,44 @@ const ForgotPasswordRequest = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const searchParams = useSearchParams();
-
   const [loading, setLoading] = useState(false);
-
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const sendResetLinkHandler = async (event: any) => {
     event.preventDefault();
 
     let email = emailAddress;
-    if (!validator.isEmail(email)) {
+    if (!validator.isEmail(email)) 
+    {
       toast.error("Please enter a valid email address");
       return;
     }
 
-    try {
+    try 
+    {
       setLoading(true);
       const { data: response } = await axios.post("/api/forgot-password", {
         email,
       });
       setLoading(false);
-      if (!response.error) {
+      if (!response.error) 
+      {
         toast.success(response.message);
         setSuccessMessage(response.message);
         setEmailAddress("");
         setErrorMessage("");
-      } else {
+      } 
+      else
+      {
         toast.error(response.error);
         setErrorMessage(response.error);
         setSuccessMessage("");
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       toast.error("Something went wrong");
       toast.error(error.message);
       setLoading(false);
@@ -196,42 +201,3 @@ const ForgotPasswordRequest = () => {
 };
 
 export default ForgotPasswordRequest;
-
-// <div className="flex justify-center items-center h-screen">
-//   <form className="w-64 border rounded p-4 shadow-lg" onSubmit={loginHandler} >
-//     <div className="mb-4">
-//       <label htmlFor="username" className="block text-gray-700 font-bold mb-2">
-//         Username
-//       </label>
-//       <input
-//         ref={usernameRef}
-//         type="text"
-//         id="username"
-//         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-//         placeholder="Enter your username"
-//         required
-//       />
-//     </div>
-//     <div className="mb-4">
-//       <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-//         Password
-//       </label>
-//       <input
-//         ref={passwordRef}
-//         type="password"
-//         id="password"
-//         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-//         placeholder="Enter your password"
-//         required
-//       />
-//     </div>
-//     <div className="flex justify-center">
-//       <button
-//         type="submit"
-//         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//       >
-//         Login
-//       </button>
-//     </div>
-//   </form>
-// </div>
