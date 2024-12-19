@@ -1,23 +1,27 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import { FaCloudUploadAlt, FaPlus, FaTimes } from "react-icons/fa";
-import * as xlsx from "xlsx";
 import { utils, writeFile } from "xlsx";
+import * as xlsx from "xlsx";
 import BookingTable from "@/components/Table/BookingTable";
 import axios from "@/utils/axios";
-import { toast, ToastContainer } from "react-toastify";
 import InputBooking from "@/components/card/inputBooking";
 import ViewBooking from "@/components/card/ViewBookings";
+import EditBooking from "@/components/card/EditBooking";
+import Filter from "@/components/card/Filter";
+import { toast, ToastContainer } from "react-toastify";
 import { fetchOwner } from "@/utils";
 import { FcNext, FcPrevious } from "react-icons/fc";
 import { CiSquareRemove } from "react-icons/ci";
 import { BiSearch } from "react-icons/bi";
-import Filter from "@/components/card/Filter";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { FRONTEND_URL } from "@/constants/constant";
-import EditBooking from "@/components/card/EditBooking";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button, Card, CardBody } from "@nextui-org/react";
+import { cn } from "@/lib/utils";
+import { addDays, format } from "date-fns";
+import { Calendars } from "@/components/ui/calendar";
 import {
   Sheet,
   SheetClose,
@@ -28,9 +32,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button, Card, CardBody } from "@nextui-org/react";
 import XlsxTable from "@/components/ui/custom/xlsx-table/xlsx-table";
 import XlsxDangerModal from "@/components/ui/custom/xlsx-table/modal/xlsx-danger-modal";
+import Context from "@/context/Context";
 import {
   Calendar as CalendarIcon,
   FolderDown,
@@ -39,7 +43,6 @@ import {
   RotateCcw,
   Save,
 } from "lucide-react";
-import Context from "@/context/Context";
 import {
   Popover,
   PopoverContent,
@@ -49,8 +52,6 @@ import {
   Select as NextUISelect,
   SelectItem as NextUISelectItem,
 } from "@nextui-org/select";
-import { cn } from "@/lib/utils";
-import { addDays, format } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -58,8 +59,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendars } from "@/components/ui/calendar";
-
 const Bookings = () => {
   const PAGE_LIMIT = 50;
   const [page, setPage] = useState(1);
@@ -86,14 +85,17 @@ const Bookings = () => {
   const [reloadData, setReloadData] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [editingBookingData, setEditingBookingData] = useState<object>({});
-  const [onFilterOpen, setOnFilterOpen] = useState<boolean>(false);
   const [showDownloadPopUp, setShowDownloadPopUp] = useState<boolean>(false);
+  const [onFilterOpen, setOnFilterOpen] = useState<boolean>(false);
   const [downloading, setDownloading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (showModal || showViewModal || showEditModal) {
+    if (showModal || showViewModal || showEditModal)
+    {
       document.body.style.overflow = "hidden";
-    } else {
+    } 
+    else 
+    {
       document.body.style.overflow = "unset";
     }
   }, [showViewModal, showModal, showEditModal]);
@@ -103,11 +105,14 @@ const Bookings = () => {
     let updateUser = async () => {
       const user = await fetchOwner(userId);
 
-      if (user && user._id && user.isActive) {
+      if (user && user._id && user.isActive) 
+      {
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         setAccountType(user?.role);
-      } else {
+      } 
+      else 
+      {
         toast.error("You are not authorized to view this page");
         localStorage.removeItem("user");
         localStorage.removeItem("authToken");
@@ -121,8 +126,10 @@ const Bookings = () => {
   const getBookingsBySearch = async (e?: any) => {
     setFilterData(null);
     e && e.preventDefault();
-    try {
-      if (searchText?.trim()?.length > 0) {
+    try 
+    {
+      if (searchText?.trim()?.length > 0) 
+      {
         let { data } = await axios.withCache({
           method: "get",
           url: `/booking/get-all-bookings/search`,
@@ -130,21 +137,27 @@ const Bookings = () => {
           cacheTime: 5 * 60 * 1000,
         });
 
-        if (!data.error) {
+        if (!data.error)
+        {
           setBookingData(data.bookings);
           data.message && toast.info(data.message);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.log("Error getting forms", error);
     }
   };
 
   useEffect(() => {
     const getBookings = async () => {
-      try {
+      try 
+      {
         setLoading(true);
 
         const { data } = await axios.post(
@@ -154,7 +167,8 @@ const Bookings = () => {
             endDate: filterData?.dateRange?.endDate ?? null,
           },
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setBookingData(data.bookings);
           setBookingCounts(data.bookingsCount);
           setFilteredData(data.bookingsForCalculation);
@@ -167,11 +181,15 @@ const Bookings = () => {
             };
           });
           data.message && console.log(data.message);
-        } else {
+        } 
+        else 
+        {
           console.log(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      } 
+      catch (error: any)
+      {
         setLoading(false);
         console.log(error);
         console.log(error);
@@ -182,12 +200,14 @@ const Bookings = () => {
 
   const cancelBookingHandler = async (bookingId: string) => {
     setFilterData(null);
-    try {
+    try 
+    {
       const { data } = await axios.post(`/booking/cancel-booking`, {
         bookingId,
         status: "CANCELLED",
       });
-      if (!data.error) {
+      if (!data.error) 
+      {
         toast.success(data.message);
         const { data: bookingData } = await axios.post(
           `/booking/get-all-bookings?page=${page}&limit=${PAGE_LIMIT}&filterBy=${filterData?.filterBy}&hotelName=${filterData?.hotelName}&bookingSource=${filterData?.bookingSource}&guestName=${filterData?.guestName}&serialNumber=${filterData?.serialNumber}&status=${filterData?.status}&addedBy=${filterData?.addedBy}`,
@@ -196,16 +216,23 @@ const Bookings = () => {
             endDate: filterData?.dateRange?.endDate ?? null,
           },
         );
-        if (!bookingData.error) {
+        if (!bookingData.error) 
+        {
           setBookingData(bookingData.bookings);
           setBookingCounts(bookingData.bookingsCount);
-        } else {
+        } 
+        else 
+        {
           toast.error(bookingData.error);
         }
-      } else {
+      }
+      else 
+      {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       toast.error(error.message);
       console.log(error);
     }
@@ -213,12 +240,14 @@ const Bookings = () => {
 
   const undoCancelBookingHandler = async (bookingId: string) => {
     setFilterData(null);
-    try {
+    try 
+    {
       const { data } = await axios.post(`/booking/undo-cancel-booking`, {
         bookingId,
         status: "CONFIRMED",
       });
-      if (!data.error) {
+      if (!data.error) 
+      {
         toast.success(data.message);
         const { data: bookingData } = await axios.post(
           `/booking/get-all-bookings?page=${page}&limit=${PAGE_LIMIT}&filterBy=${filterData?.filterBy}&hotelName=${filterData?.hotelName}&bookingSource=${filterData?.bookingSource}&guestName=${filterData?.guestName}&serialNumber=${filterData?.serialNumber}&status=${filterData?.status}&addedBy=${filterData?.addedBy}`,
@@ -227,13 +256,18 @@ const Bookings = () => {
             endDate: filterData?.dateRange?.endDate ?? null,
           },
         );
-        if (!bookingData.error) {
+        if (!bookingData.error) 
+        {
           setBookingData(bookingData.bookings);
           setBookingCounts(bookingData.bookingsCount);
-        } else {
+        } 
+        else 
+        {
           toast.error(bookingData.error);
         }
-      } else {
+      } 
+      else 
+      {
         toast.error(data.error);
       }
     } catch (error: any) {
@@ -244,7 +278,8 @@ const Bookings = () => {
 
   const handleDownload = async () => {
     const getBookingsFordownload = async () => {
-      try {
+      try 
+      {
         const { data } = await axios.post(
           `/booking/get-all-bookings?filterBy=${filterData?.filterBy}&hotelName=${filterData?.hotelName}&bookingSource=${filterData?.bookingSource}&guestName=${filterData?.guestName}&serialNumber=${filterData?.serialNumber}&status=${filterData?.status}&addedBy=${filterData?.addedBy}`,
           {
@@ -252,12 +287,17 @@ const Bookings = () => {
             endDate: filterData?.dateRange?.endDate ?? null,
           },
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           return data.bookings;
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         toast.error(error.message);
         console.log(error);
       }
@@ -265,16 +305,22 @@ const Bookings = () => {
 
     let bookingDataFormDownload;
 
-    if (searchText.trim().length > 0) {
+    if (searchText.trim().length > 0) 
+    {
       bookingDataFormDownload = bookingData;
-    } else if (filterData) {
+    } 
+    else if (filterData) 
+    {
       bookingDataFormDownload = filteredData;
-    } else {
+    } 
+    else 
+    {
       bookingDataFormDownload = await getBookingsFordownload();
     }
 
     let bookingDataForExcel = bookingDataFormDownload.map((booking: any) => {
-      return {
+      return 
+      {
         "Reservation Number": booking.serialNumber,
         "Hotel Name": booking.hotel?.hotelName,
         "Guest Name": booking.guestName,
@@ -308,8 +354,6 @@ const Bookings = () => {
     );
   };
 
-  //upload excel file
-  //Basic validation : TODO: no requirement so no need to do it
   const requiredFields = [
     "Hotel Name",
     "Guest Name",
@@ -347,11 +391,13 @@ const Bookings = () => {
   });
   const readUploadFile = (e: any) => {
     e.preventDefault();
-    if (e.target.files) {
+    if (e.target.files) 
+    {
       const file = e.target.files[0];
       const fileType = file.name.split(".").pop();
 
-      if (fileType !== "xlsx") {
+      if (fileType !== "xlsx") 
+      {
         toast(() => (
           <>
             <strong>Invalid file type</strong>
@@ -369,7 +415,8 @@ const Bookings = () => {
         const worksheet = workbook.Sheets[sheetName];
         let json = xlsx.utils.sheet_to_json(worksheet, { dateNF: "m-d-yy" });
 
-        if (json.length > 130) {
+        if (json.length > 130) 
+        {
           toast(() => (
             <>
               <strong>Data limit exceeded</strong>
@@ -380,10 +427,14 @@ const Bookings = () => {
         }
 
         json = json.map((row: any) => {
-          for (let key in row) {
-            if (row[key] instanceof Date) {
+          for (let key in row) 
+          {
+            if (row[key] instanceof Date) 
+            {
               row[key] = formatDate(row[key]);
-            } else if (typeof row[key] === "string") {
+            }
+            else if (typeof row[key] === "string") 
+            {
               row[key] = row[key].toUpperCase();
             }
           }
@@ -396,7 +447,8 @@ const Bookings = () => {
           !requiredFields.every((field) => keys.includes(field));
         const isModifiedFieldPresent = keys.includes("Modified Date");
 
-        if (isFieldMismatch || isModifiedFieldPresent) {
+        if (isFieldMismatch || isModifiedFieldPresent) 
+        {
           toast(() => (
             <>
               <strong>Column mismatch</strong>
@@ -437,7 +489,8 @@ const Bookings = () => {
   };
 
   useEffect(() => {
-    if (isConfirmed) {
+    if (isConfirmed) 
+    {
       const toastId = toast("Loading...", { autoClose: false });
 
       axios
@@ -445,11 +498,8 @@ const Bookings = () => {
         .then((response: any) => {
           console.log(response);
           setIsConfirmed(false);
-
-          // Reset the xlsxFile state here
           setXlsxFile([]);
 
-          // Update the toast to show success
           toast.update(toastId, {
             render: "Upload successful!",
             type: toast.TYPE.SUCCESS,
@@ -460,7 +510,6 @@ const Bookings = () => {
           console.error("Error object:", error);
           console.error("Error details:", error.response);
 
-          // Update the toast to show the error
           toast.update(toastId, {
             render: `Error: ${error.message}`,
             type: toast.TYPE.ERROR,
@@ -493,14 +542,19 @@ const Bookings = () => {
           endDate: null,
         },
       );
-      if (!data.error) {
+      if (!data.error) 
+      {
         setBookingData(data.bookings);
         setBookingCounts(data.bookingsCount);
         setStayColor(true);
-      } else {
+      }
+      else
+      {
         console.log(data.error);
       }
-    } catch (error: any) {
+    }
+    catch (error: any) 
+    {
       console.log(error);
     }
   };
@@ -535,18 +589,21 @@ const Bookings = () => {
   };
   useEffect(() => {
     const getHotels = async () => {
-      try {
+      try 
+      {
         setLoading(true);
         const { data } = await axios.post(`/hotel/get-all-hotels`);
         const { data: users } = await axios.get(`/user/get-all-users`);
 
-        if (!data.error) {
+        if (!data.error) 
+        {
           setHotels(data.hotels);
           setUsers(users.users);
-        } else {
         }
         setLoading(false);
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         setLoading(false);
         console.log(error);
       }
