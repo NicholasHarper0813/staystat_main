@@ -8,15 +8,14 @@ import EditHotel from "@/components/card/EditHotel";
 import axios from "@/utils/axios";
 import { ToastContainer, toast } from "react-toastify";
 import { FcNext, FcPrevious } from "react-icons/fc";
-import { FRONTEND_URL } from "@/constants/constant";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { BiLink, BiSearch } from "react-icons/bi";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { CiSquareRemove } from "react-icons/ci";
+import { FRONTEND_URL } from "@/constants/constant";
 import { useRouter } from "next/navigation";
 import { utils, writeFile } from "xlsx";
 import { fetchOwner } from "@/utils";
-
 import {
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
@@ -43,9 +42,12 @@ const Hotels = () => {
   const [showEditHotelModal, setShowEditHotelModal] = useState<boolean>(false);
   const [editingHotelData, setEditingHotelData] = useState<object>({});
   useEffect(() => {
-    if (showModal || showViewModal) {
+    if (showModal || showViewModal)
+    {
       document.body.style.overflow = "hidden";
-    } else {
+    } 
+    else 
+    {
       document.body.style.overflow = "unset";
     }
   }, [showViewModal, showModal]);
@@ -53,14 +55,18 @@ const Hotels = () => {
     let userId = JSON.parse(localStorage.getItem("user") || "{}")?._id;
     let updateUser = async () => {
       const user = await fetchOwner(userId);
-      if (user.role !== "ADMIN") {
+      if (user.role !== "ADMIN")
+      {
         window.location.href = "/bookings";
       }
-      if (user && user._id && user.isActive) {
+      if (user && user._id && user.isActive) 
+      {
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         setAccountType(user?.role);
-      } else {
+      } 
+      else
+      {
         toast.error("You are not authorized to view this page");
         localStorage.removeItem("user");
         localStorage.removeItem("authToken");
@@ -73,37 +79,50 @@ const Hotels = () => {
 
   const getHotelsBySearch = async (e?: any) => {
     e && e.preventDefault();
-    try {
-      if (searchText?.trim()?.length > 0) {
+    try
+    {
+      if (searchText?.trim()?.length > 0) 
+      {
         let { data } = await axios.get(
           `/hotel/get-all-hotels/search?&query=${searchText}`
         );
-        if (!data.error) {
+        if (!data.error)
+        {
           setHotelData(data.hotels);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.log("Error getting forms", error);
     }
   };
 
   useEffect(() => {
     const getHotels = async () => {
-      try {
+      try
+      {
         setLoading(true);
         const { data } = await axios.post(
           `/hotel/get-all-hotels?page=${page}&limit=${PAGE_LIMIT}`
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setHotelData(data.hotels);
           setHotelsCount(data.hotelsCount);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      }
+      catch (error: any)
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -113,11 +132,11 @@ const Hotels = () => {
   }, [page, PAGE_LIMIT, reloadData]);
 
   const deleteHotelHandler = async (id?: string) => {
-    try {
-      const { data } = await axios.post(`/hotel/delete-hotel`, {
-        id,
-      });
-      if (!data.error) {
+    try 
+    {
+      const { data } = await axios.post(`/hotel/delete-hotel`, {id});
+      if (!data.error) 
+      {
         toast.success(data.message);
         const { data: hotel } = await axios.post(
           `/hotel/get-all-hotels?page=${page}&limit=${PAGE_LIMIT}`,
@@ -126,27 +145,34 @@ const Hotels = () => {
             endDateFilter: "",
           }
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setHotelData(hotel.hotels);
           setHotelsCount(data.hotelsCount);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
-      } else {
+      } 
+      else 
+      {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       toast.error(error.message);
       console.log(error);
     }
   };
 
   const updateHotelStatushandler = async (id?: string) => {
-    try {
-      const { data } = await axios.post(`/hotel/update-hotel-status`, {
-        id,
-      });
-      if (!data.error) {
+    try 
+    {
+      const { data } = await axios.post(`/hotel/update-hotel-status`, {id});
+      if (!data.error)
+      {
         toast.success(data.message);
         const { data: hotel } = await axios.post(
           `/hotel/get-all-hotels?page=${page}&limit=${PAGE_LIMIT}`,
@@ -155,16 +181,23 @@ const Hotels = () => {
             endDateFilter: "",
           }
         );
-        if (!data.error) {
+        if (!data.error)
+        {
           setHotelData(hotel.hotels);
           setHotelsCount(data.hotelsCount);
-        } else {
+        } 
+        else
+        {
           toast.error(data.error);
         }
-      } else {
+      } 
+      else
+      {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any)
+    {
       toast.error(error.message);
       console.log(error);
     }
@@ -172,14 +205,20 @@ const Hotels = () => {
 
   const handleDownload = async () => {
     const getHotelsForDownload = async () => {
-      try {
+      try 
+      {
         const { data } = await axios.post(`/hotel/get-all-hotels`);
-        if (!data.error) {
+        if (!data.error)
+        {
           return data.hotels;
-        } else {
+        } 
+        else
+        {
           toast.error(data.error);
         }
-      } catch (error: any) {
+      }
+      catch (error: any) 
+      {
         toast.error(error.message);
         console.log(error);
       }
@@ -265,21 +304,6 @@ const Hotels = () => {
               <FcNext />
             </button>
           </div>
-          {/* <div className="ml-4 py-2 px-2 h-full border shadow rounded text-xs font-medium"> */}
-          {/* <Select
-            id="hotel"
-            name="hotel"
-            options={[{value: "all", label: "All Hotels"}, ...hotelData.map((hotel: any)=>({value: hotel._id, label: hotel.hotelName}))]}
-            isMulti
-            value={"coming soon"}
-            onChange={()=>{
-              toast.info("Search feature is not available yet")
-              // handleHotelSelection()
-            }}
-            className="w-[80px] outline-none ml-4 px-2 h-full shadow rounded text-xs font-medium"
-            isDisabled={loading}
-          /> */}
-          {/* </div> */}
         </div>
         <form
           onSubmit={(e) => {
@@ -301,8 +325,6 @@ const Hotels = () => {
               className="min-w-[40px] flex justify-center items-center defaultBtn"
               onClick={(e) => {
                 getHotelsBySearch(e);
-                // e.preventDefault();
-                // toast.info("Search feature is not available yet");
               }}
             >
               <BiSearch className="text-xl" />
