@@ -7,10 +7,10 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlineEye } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "@/utils/axios";
-import EditLead from "../card/EditLead";
 import { InfinitySpin } from "react-loader-spinner";
 import { FaTimes } from "react-icons/fa";
+import axios from "@/utils/axios";
+import EditLead from "../card/EditLead";
 interface TableProps {
   leadsData: {
     _id: string;
@@ -44,55 +44,25 @@ const LeadsTable = ({
   owner,
   loading,
 }: TableProps) => {
-  // console.log(userData, "userdata");
-  //   const [editingLeadsData, setEditingLeadsData] = useState<any>({});
-  //   const [userId, setUserId] = useState<string>("");
 
   const [updating, setUpdating] = useState<boolean>(false);
-
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [editingLeadsData, setEditingLeadsData] = useState<object>({});
 
   useEffect(() => {
-    if(leadsData?.length === 0){
+    if(leadsData?.length === 0)
+    {
       toast.error("No Leads Found");
     }
-    if (showEditModal) {
+    if (showEditModal)
+    {
       document.body.style.overflow = "hidden";
-    } else {
+    } 
+    else 
+    {
       document.body.style.overflow = "unset";
     }
   }, [showEditModal,leadsData]);
-
-  // const confirmLeadHandler = async (id: string) => {
-  //   try {
-  //     setUpdating(true);
-  //     const { data } = await axios.post("/leads/confirm-lead", {
-  //       leadId: id,
-  //     });
-  //     if (!data.error) {
-  //       // const { data } = await axios.post("/user/get-users");
-  //       const leadIndex = leadsData.findIndex((lead: any) => lead._id === id);
-
-  //       // If the user is found in the array, replace the data at that index
-  //       if (leadIndex !== -1) {
-  //         setLeadsData((prev: any) => {
-  //           const updatedLeadData = [...prev];
-  //           updatedLeadData[leadIndex] = data.lead;
-  //           return updatedLeadData;
-  //         });
-  //       }
-  //       toast.success(data.message);
-  //     } else {
-  //       toast.error(data.error);
-  //     }
-  //     setUpdating(false);
-  //   } catch (error: any) {
-  //     setUpdating(false);
-  //     console.log(error);
-  //     toast.error(error.message);
-  //   }
-  // };
 
   return (
     <div className="w-full">
@@ -135,18 +105,10 @@ const LeadsTable = ({
               </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Status
-              </th>
-
-              
+              </th>              
             </tr>
           </thead>
           <tbody className="rounded-xl">
-            {/* {leadsData?.length === 0 && (
-             
-                
-                <p className="mx-auto text-center">No Leads Found</p>
-              
-            )} */}
             {leadsData && leadsData.length > 0 && (
               <>
                 {loading ? (
@@ -248,64 +210,6 @@ const LeadsTable = ({
                           <td className="px-6 py-2 uppercase">
                             {lead?.status || "PENDING"}
                           </td>
-                          {/* <td className="px-6 py-2 uppercase">
-                            <div className="flex justify-center items-center">
-                              <button
-                                // disabled={user.addedBy !== owner._id}
-                                data-tip={"View Lead"}
-                                onClick={() => {
-                                  getLeads(lead);
-                                  setShowModal(true);
-                                }}
-                                disabled={updating}
-                                className={`w-fit text-center p-2 shadow border bg-gray-100 text-blue-500  hover:opacity-90 text-sm rounded-md mr-2 disabled:opacity-50 flex gap-2 items-center justify-center font-semibold`}
-                              >
-                                <AiOutlineEye
-                                  size={20}
-                                  className="inline-block"
-                                />{" "}
-                                View
-                              </button>
-                              <button
-                                // disabled={user.addedBy !== owner._id}
-                                data-tip={"Edit Lead"}
-                                onClick={() => {
-                                  setShowEditModal(true);
-                                  setEditingLeadsData(lead);
-                                }}
-                                disabled={
-                                  updating ||
-                                  (lead?.createdBy?._id !== owner?._id &&
-                                    owner?.role !== "ADMIN") ||
-                                  lead?.status === "CONFIRMED"
-                                }
-                                className={`w-fit text-center p-2 shadow border bg-gray-100 text-green-500  hover:opacity-90 text-sm rounded-md mr-2 disabled:opacity-50 flex gap-2 items-center justify-center font-semibold`}
-                              >
-                                <FiEdit size={20} className="inline-block" />{" "}
-                                Edit
-                              </button>
-
-                              <button
-                                // disabled={user.addedBy !== owner._id}
-                                data-tip={"update Lead"}
-                                onClick={() => {
-                                  confirmLeadHandler(lead?._id);
-                                }}
-                                disabled={
-                                  lead?.status === "CONFIRMED" || updating
-                                }
-                                className={`w-fit text-center p-2 shadow border bg-gray-100 text-green-500  hover:opacity-90 text-sm rounded-md mr-2 disabled:opacity-50 flex gap-2 items-center justify-center font-semibold`}
-                              >
-                                <MdFileDownloadDone
-                                  size={20}
-                                  className="inline-block"
-                                />{" "}
-                                {lead?.status === "CONFIRMED"
-                                  ? "Confirmed"
-                                  : "Confirm"}
-                              </button>
-                            </div>
-                          </td> */}
                         </tr>
                       );
                     }
