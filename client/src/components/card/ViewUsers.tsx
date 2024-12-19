@@ -20,32 +20,26 @@ interface Props {
   owner: any;
 }
 
-import Select from "react-select";
-
-import { FaTimes } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
+import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
+import Select from "react-select";
+import { FaTimes } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 
 const ViewUser = ({ user, onClose, owner,deleteUserHandler,updateStatusHandler,setEditingUserData,setShowEditModal }: Props) => {
   const [showDeletePopUp, setShowDeletePopUp] = useState<boolean>(false);
   const [showStatusPopUp, setShowStatusPopUp] = useState<boolean>(false);
-  // console.log( user, "userdata");
-
   const handleShowDeleteModal = (event: any) => {
-    // setUserId(id);
     event.preventDefault();
     setShowDeletePopUp(true);
   };
   const handleShowStatusModal = (event: any) => {
     event.preventDefault();
     setShowStatusPopUp(true);
-    // onClose(false)
   };
 
   return (
-
     <>
     <form className="p-6 items-center rounded-lg shadow md:flex-row md:max-w-xl w-full">
       <TailwindWrapper>
@@ -231,7 +225,6 @@ const ViewUser = ({ user, onClose, owner,deleteUserHandler,updateStatusHandler,s
             </div>
           </div>
         )
-
       }
     </>
   );
