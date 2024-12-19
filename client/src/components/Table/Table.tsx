@@ -39,18 +39,19 @@ const Table = ({
   owner,
   loading,
 }: TableProps) => {
-  // console.log(userData, "userdata");
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [editingUserData, setEditingUserData] = useState<any>({});
   const [showDeletePopUp, setShowDeletePopUp] = useState<boolean>(false);
   const [showStatusPopUp, setShowStatusPopUp] = useState<boolean>(false);
-
   const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
-    if (showEditModal) {
+    if (showEditModal)
+    {
       document.body.style.overflow = "hidden";
-    } else {
+    } 
+    else 
+    {
       document.body.style.overflow = "unset";
     }
   }, [showEditModal]);
@@ -110,8 +111,6 @@ const Table = ({
                   </div>
                 ) : (
                   userData.map((user: any, index: number) => {
-                    // console.log(user.name);
-
                     return (
                       <tr
                         title="Click to view user details"
@@ -141,51 +140,6 @@ const Table = ({
                         <td className="px-4 py-2 text-center">
                           {user.email || ""}
                         </td>
-                        {/* <td className="px-6 py-4"></td> */}
-                        {/* <td className="px-6 py-4">{user.hotel || ""}</td> */}
-                        {/* <td className="px-4 py-4 text-center">{user.role || ""}</td> */}
-                        {/* <td className="px-4 py-2 text-center">
-                        <div className="flex justify-center items-center">
-                      <button
-                            onClick= {()=>{
-                                // console.log(user)
-                                getUser(user);
-                                setShowModal(true);
-
-                            }}
-                            className={`w-fit text-center p-2 shadow border bg-gray-100 text-blue-500  hover:opacity-90 text-sm rounded-md mr-2 disabled:opacity-50`}
-                          >
-                            <AiOutlineEye className="" />
-                          </button>
-                          <button
-                            disabled={user.addedBy !== owner._id}
-                            data-tip={"Edit User"}
-                            onClick= {()=>{
-                              setShowEditModal(true)
-                              setEditingUserData(user)
-                            }}
-                            className={`w-fit text-center p-2 shadow border bg-gray-100 text-green-500  hover:opacity-90 text-sm rounded-md mr-2 disabled:opacity-50`}
-                          >
-                            <FiEdit className="" />
-                          </button>
-                          <button
-                            disabled={user.addedBy !== owner._id}
-                            data-tip={"Delete User"}
-                            onClick={()=> handleShowDeleteModal(user._id)}
-                            className={`w-fit text-center p-2 shadow border bg-gray-100 text-red-500  hover:opacity-90 text-sm rounded-md disabled:opacity-50`}
-                          >
-                            <RiDeleteBin6Line size={15} className="" />
-                          </button>
-                          <button
-                            disabled={user.addedBy !== owner._id}
-                            data-tip={"Delete User"}
-                            onClick={()=> handleShowStatusModal(user._id)}
-                            className={`w-fit text-center p-2 ml-2 shadow border bg-gray-100 ${!user.isActive ? 'text-cyan-500': 'text-red-500'}  hover:opacity-90 text-sm rounded-md disabled:opacity-50`}
-                          >
-                            {user.isActive ? "Deactivate" : "Activate"}
-                          </button>
-                        </div>
-                      </td> */}
                       </tr>
                     );
                   })
