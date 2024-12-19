@@ -7,7 +7,6 @@ interface Props {
 }
 
 import { FaTimes } from "react-icons/fa";
-
 import { toast } from "react-toastify";
 import axios from "@/utils/axios";
 import React, { useState, useEffect, useRef } from "react";
@@ -32,10 +31,8 @@ const EditLead = ({
       window.location.reload();
     }
   }, [updatedData]);
-
-  // console.log(editingBookingData)
+  
   useEffect(() => {
-    // console.log(editingBookingDataProps)
     setEditingLeadData(editingLeadDataProps);
   }, [editingLeadDataProps]);
 
@@ -45,13 +42,12 @@ const EditLead = ({
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
-      if (formValues[key].trim() === "") {
-        // console.log(key)
-
-        if (key !== "specialReq") {
+      if (formValues[key].trim() === "")
+      {
+        if (key !== "specialReq") 
+        {
           toast.error("Please fill all the fields");
         }
 
@@ -61,35 +57,34 @@ const EditLead = ({
     const numberRegex = /^[0-9]+$/;
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    if(formValues.cn && formValues.cn.length !== 10){
+    if(formValues.cn && formValues.cn.length !== 10)
+    {
         toast.error("Please enter a valid phone number and don't include +91");
         return;
     }
 
-    if(formValues.guest_name && !nameRegex.test(formValues.guest_name)){
+    if(formValues.guest_name && !nameRegex.test(formValues.guest_name))
+    {
         toast.error("Guest name should contain only alphabets");
         return;
     }
 
     console.log(formValues);
-
-   
-
-    if (!nameRegex.test(formValues.guest_name)) {
+    if (!nameRegex.test(formValues.guest_name)) 
+    {
       toast.error("Guest name should contain only alphabets");
       return;
     }
 
-    if(!nameRegex.test(formValues.area)){
+    if(!nameRegex.test(formValues.area))
+    {
         toast.error("Area should contain only alphabets");
         return;
     }
 
-    try {
+    try 
+    {
       setLoading(true);
-
-
-
       const { data } = await axios.post("/leads/update-lead", {
         id: editingLeadData._id,
         guestName: formValues.guest_name,
@@ -102,14 +97,14 @@ const EditLead = ({
         budget: formValues.budget,
         specialRequirements: formValues.specialReq,
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error)
+      {
         const leadIndex = leadData.findIndex(
           (lead: any) => lead._id === editingLeadData._id
         );
 
-        // If the user is found in the array, replace the data at that index
-        if (leadIndex !== -1) {
+        if (leadIndex !== -1) 
+        {
           setLeadData((prev: any) => {
             const updatedLeadData = [...prev];
             updatedLeadData[leadIndex] = data.lead;
@@ -121,11 +116,15 @@ const EditLead = ({
 
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      }
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
@@ -355,23 +354,6 @@ const EditLead = ({
             placeholder="Well well well"
           />
         </div>
-
-        {/* <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                id="Password"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="•••••••••"
-                required
-              />
-            </div> */}
       </div>
       <button
         type="submit"
