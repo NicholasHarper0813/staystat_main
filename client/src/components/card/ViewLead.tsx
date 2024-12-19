@@ -28,17 +28,12 @@ import Select from "react-select";
 import { FaTimes } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
 import { FiEdit } from "react-icons/fi";
-// import { AiOutlineEye } from "react-icons/ai";
 import { MdFileDownloadDone } from "react-icons/md";
 import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 
 const ViewLead = ({ lead, onClose,owner,confirmLeadHandler,setEditingLeadsData,setShowEditModal }: Props) => {
   const [updating, setUpdating] = useState<boolean>(false);
   const [showStatusPopup, setShowStatusPopUp] = useState<boolean>(false);
-
-  // console.log( lead, "userdata");
-
-  
 
   return (
     <>
@@ -122,7 +117,6 @@ const ViewLead = ({ lead, onClose,owner,confirmLeadHandler,setEditingLeadsData,s
             id="phone"
             className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
             placeholder="+91 999999999"
-            // pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
             value={lead?.contactNumber}
             disabled
           />
@@ -259,23 +253,6 @@ const ViewLead = ({ lead, onClose,owner,confirmLeadHandler,setEditingLeadsData,s
             
           />
         </div>
-
-        {/* <div className="mb-6">
-            <label
-              htmlFor="password"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="Password"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="•••••••••"
-              required
-            />
-          </div> */}
           <div className="flex">
                               
                               <button
@@ -300,7 +277,6 @@ const ViewLead = ({ lead, onClose,owner,confirmLeadHandler,setEditingLeadsData,s
                               </button>
 
                               <button
-                                // disabled={user.addedBy !== owner._id}
                                 data-tip={"update Lead"}
                                 onClick={(e) => {
                                   e.preventDefault()
