@@ -1,10 +1,10 @@
 "use client";
 import "./chartBox.scss";
-import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
+import ViewDashData from "@/components/dash/Components/Table/ViewDashData";
 import Link from "next/link";
+import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
 import { FaUserClock } from "react-icons/fa";
 import { useState } from "react";
-import ViewDashData from "@/components/dash/Components/Table/ViewDashData";
 
 type Props = {
   color: string;
@@ -21,7 +21,8 @@ type Props = {
 const ChartBox = (props: Props) => {
   const [modal, setModal] = useState(false);
   const getReactIcon = (iconName: string) => {
-    switch (iconName) {
+    switch (iconName)
+    {
       case "BsCalendar2Date":
         return <FaUserClock className="text-lg" />;
       default:
