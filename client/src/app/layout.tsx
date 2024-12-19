@@ -1,11 +1,11 @@
 import React from "react";
 import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import DefaultLayout from "@/app/defaultLayout";
 import Providers from "@/app/providers";
-import { ReduxProviders } from "@/lib/provider";
+import DefaultLayout from "@/app/defaultLayout";
 import ContextProvider from "@/context/ContextProvider";
+import { Inter } from "next/font/google";
+import { ReduxProviders } from "@/lib/provider";
+import type { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
