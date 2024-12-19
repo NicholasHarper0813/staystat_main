@@ -29,17 +29,19 @@ import TotalUsers from "@/components/dash/Templates/TopBox/TotalUsers";
 import TotalDue from "@/components/dash/Templates/TopBox/TotalDue";
 import TotalHotels from "@/components/dash/Templates/TopBox/TotalHotels";
 
-import RevenueChart from "@/components/dash/Templates/MiddleBox/AreaChartRevBookDate";
-import RevenueCheckinAreaChart from "@/components/dash/Templates/MiddleBox/AreaChartRevCheckinDate";
 import AreaChartBookingBookingDate from "@/components/dash/Templates/MiddleBox/AreaChartBookingBookingDate";
 import AreaChartBookingCheckinDate from "@/components/dash/Templates/MiddleBox/AreaChartBookingCheckinDate";
 
+import RevenueChart from "@/components/dash/Templates/MiddleBox/AreaChartRevBookDate";
+import RevenueCheckinAreaChart from "@/components/dash/Templates/MiddleBox/AreaChartRevCheckinDate";
 import RevenueBarChartRBT from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBAT";
 import RevenueBarChartBATW from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATW";
 import RevenueBarChartBATLW from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATLW";
 import RevenueBarChartBATM from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATM";
 import RevenueBarChartBATY from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATY";
 import RevenueBarChartBATLY from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATLY";
+import RevenueBarChartBATLM from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATLM";
+
 import BookingCountBarChartBCT from "@/components/dash/Templates/BottomBox/OtaPerformance/BookingTime/BarChartBCT";
 import BookingCountBarChartBCTW from "@/components/dash/Templates/BottomBox/OtaPerformance/BookingTime/BarChartBCTW";
 import BookingCountBarChartBCTLW from "@/components/dash/Templates/BottomBox/OtaPerformance/BookingTime/BarChartBCTLW";
@@ -47,7 +49,6 @@ import BookingCountBarChartBCTM from "@/components/dash/Templates/BottomBox/OtaP
 import BookingCountBarChartBCTLM from "@/components/dash/Templates/BottomBox/OtaPerformance/BookingTime/BarChartBCTLM";
 import BookingCountBarChartBCTLY from "@/components/dash/Templates/BottomBox/OtaPerformance/BookingTime/BarChartBCTLY";
 import BookingCountBarChartBCTY from "@/components/dash/Templates/BottomBox/OtaPerformance/BookingTime/BarChartBCTY";
-import RevenueBarChartBATLM from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATLM";
 
 import HotelWiseRevenueBarChartRBT
     from "@/components/dash/Templates/BottomBox/HotelPerformance/RevenueTime/BarChartBAT";
@@ -165,10 +166,10 @@ const Dashboard = () => {
         dispatch(fetchAllBookingsAsync())
     }, []);
 
-const bookingData: BookingData[] = useSelector(selectAllbookings);
-const userDeactive =  bookingData.filter((item: any) => item?.addedBy?.isActive === true);
-const hotelDeactive =  bookingData.filter((item: any) => item?.hotel?.isActive === true);
-const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CONFIRMED");
+    const bookingData: BookingData[] = useSelector(selectAllbookings);
+    const userDeactive =  bookingData.filter((item: any) => item?.addedBy?.isActive === true);
+    const hotelDeactive =  bookingData.filter((item: any) => item?.hotel?.isActive === true);
+    const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CONFIRMED");
     const createdAt = confirmedFilter.map((item: any) => item?.createdAt);
     const bookingAmount = confirmedFilter.map((item: any) => item?.bookingAmount);
     const checkInDate = confirmedFilter.map((item: any) => item?.checkInDate);
@@ -339,7 +340,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         const today: Date = new Date();
         const endOfPreviousWeek: Date = endOfWeek(subDays(today, 7));
         const startOfPreviousWeek: Date = startOfWeek(subDays(endOfPreviousWeek, 6));
-
         const bookingsForPreviousWeek = bookingData.filter(
             (booking) =>
                 isWithinInterval(new Date(booking.createdAt), {
@@ -358,7 +358,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
     useEffect(() => {
         const endOfPreviousWeek: Date = endOfWeek(subDays(new Date(), 7));
         const startOfPreviousWeek: Date = startOfWeek(subDays(endOfPreviousWeek, 6));
-
         const previousWeekRevenueData = revenueAndBooking.filter(
             (dataPoint) =>
                 isWithinInterval(new Date(dataPoint.createdAt), {
@@ -381,7 +380,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         const currentDate: Date = new Date();
         const startOfThisMonth: Date = startOfMonth(currentDate);
         const endOfThisMonth: Date = endOfMonth(currentDate);
-
         const bookingsForThisMonth = bookingData.filter(
             (booking) =>
                 isWithinInterval(new Date(booking.createdAt), {
@@ -401,7 +399,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         const currentDate: Date = new Date();
         const startOfThisMonth: Date = startOfMonth(currentDate);
         const endOfThisMonth: Date = endOfMonth(currentDate);
-
         const thisMonthRevenueData = revenueAndBooking.filter(
             (dataPoint) =>
                 isWithinInterval(new Date(dataPoint.createdAt), {
@@ -1155,8 +1152,6 @@ return (
                                     </div>
                                 </div>
                             </>
-
-
                         )}
                         {hotelBookingOrRevenue === "Revenue" && day === "-365" && (
                             <>
@@ -1177,7 +1172,6 @@ return (
                                     </div>
                                 </div>
                             </>
-
                         )}
 
                         {hotelBookingOrRevenue === "Booking" && day === "0" && (
