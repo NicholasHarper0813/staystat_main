@@ -2,10 +2,11 @@
 import axios from "@/utils/axios";
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from "react";
-import { toast } from "react-toastify";
 import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
+import { toast } from "react-toastify";
 
-interface Props {
+interface Props
+{
   setWorkData: (users: any) => void;
   onClose: (value: boolean) => void;
 }
@@ -13,28 +14,30 @@ interface Props {
 const InputWork = ({ setWorkData, onClose }: Props) => {
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const [userName, setUserName] = useState("");
-  const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [reactSelectOptions, setReactSelectOptions] = useState<any>([]);
   const [selectedWorks, setSelectedWorks] = useState<any>([]);
   const [selectedUser, setSelectedUser] = useState<any>({});
+  const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
-      try {
+      try 
+      {
         const { data } = await axios.get("/user/get-all-users");
         console.log(data);
-        if (!data.error) {
+        if (!data.error)
+        {
           setAvailableUsers(data.users);
           let options = data.users.map((user: any) => {
             return { value: user._id, label: user.name };
           });
           setReactSelectOptions(options);
-        } else {
-          // toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -49,10 +52,10 @@ const InputWork = ({ setWorkData, onClose }: Props) => {
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
-      if (formValues[key].trim() === "") {
+      if (formValues[key].trim() === "")
+      {
         toast.error("Please fill all the fields");
         return;
       }
@@ -60,15 +63,16 @@ const InputWork = ({ setWorkData, onClose }: Props) => {
 
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    try {
+    try
+    {
       setLoading(true);
       const { data } = await axios.post("/work/create-work", {
         workDetails: formValues.workDetails,
         finishDeadline: formValues.finishDeadline,
         userName: formValues.user,
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error)
+      {
         setWorkData((prev: any) => {
           return [data.work, ...prev];
         });
@@ -76,11 +80,15 @@ const InputWork = ({ setWorkData, onClose }: Props) => {
 
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      }
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any)
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
