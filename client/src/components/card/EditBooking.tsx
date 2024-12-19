@@ -157,21 +157,22 @@ const EditBooking = ({
     const numberRegex = /^[0-9]+$/;
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    if (!nameRegex.test(formValues.guest_name)) {
+    if (!nameRegex.test(formValues.guest_name))
+    {
       toast.error("Guest name should contain only alphabets");
       return;
     }
 
-    if (
-      formValues.cn.trim() === "" ||
+    if (formValues.cn.trim() === "" ||
       !numberRegex.test(formValues.cn.trim()) ||
-      formValues.cn.trim().length !== 10
-    ) {
+      formValues.cn.trim().length !== 10) 
+    {
       toast.error("Please enter a valid contact number and don't include +91");
       return;
     }
 
-    try {
+    try
+    {
       setLoading(true);
       const { data } = await axios.post("/booking/update-booking", {
         id: editingBookingData._id,
@@ -193,14 +194,14 @@ const EditBooking = ({
         remarks: formValues.remark,
         guestEmail: formValues.guestEmail,
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error) 
+      {
         const bookingIndex = bookingData.findIndex(
           (hotel: any) => hotel._id === editingBookingDataProps._id
         );
 
-        // If the user is found in the array, replace the data at that index
-        if (bookingIndex !== -1) {
+        if (bookingIndex !== -1) 
+        {
           setBookingData((prev: any) => {
             const updatedBookingData = [...prev];
             updatedBookingData[bookingIndex] = data.user;
@@ -212,11 +213,15 @@ const EditBooking = ({
 
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      }
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    }
+    catch (error: any)
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
@@ -642,14 +647,7 @@ const EditBooking = ({
         </div>
         <button type="submit" className="defaultBtn" disabled={loading}>
           Update
-        </button>
-        {/* <button
-        type="reset"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 disabled:opacity-50"
-        disabled={loading}
-      >
-        Reset
-      </button> */}
+        </button
       </TailwindWrapper>
     </form>
   );
