@@ -1,23 +1,23 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import "react-toastify/dist/ReactToastify.css";
 import Select from "react-select";
 import Table from "@/components/Table/Table";
 import LeadsTable from "@/components/Table/LeadsTable";
 import InputEmp from "@/components/card/InputEmp";
 import LeadsInput from "@/components/card/LeadsInput";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "@/utils/axios";
+import ViewUser from "@/components/card/ViewUsers";
+import ViewLead from "@/components/card/ViewLead";
+import EditLead from "@/components/card/EditLead";
+import { ToastContainer, toast } from "react-toastify";
+import { FRONTEND_URL } from "@/constants/constant";
 import { FaPlus } from "react-icons/fa";
 import { fetchOwner } from "@/utils";
-import ViewUser from "@/components/card/ViewUsers";
 import { BiLink, BiSearch } from "react-icons/bi";
 import { FcNext, FcPrevious } from "react-icons/fc";
 import { CiSquareRemove } from "react-icons/ci";
-import ViewLead from "@/components/card/ViewLead";
-import { FRONTEND_URL } from "@/constants/constant";
-import EditLead from "@/components/card/EditLead";
 
 const Leads = () => {
   let router = useRouter();
@@ -33,14 +33,16 @@ const Leads = () => {
   const [showViewModal, setShowViewModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [reloadData, setReloadData] = useState<boolean>(false);
-
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [editingLeadsData, setEditingLeadsData] = useState<object>({});
 
   useEffect(() => {
-    if (showModal || showViewModal) {
+    if (showModal || showViewModal)
+    {
       document.body.style.overflow = "hidden";
-    } else {
+    } 
+    else
+    {
       document.body.style.overflow = "unset";
     }
   }, [showViewModal, showModal]);
@@ -50,11 +52,14 @@ const Leads = () => {
     let updateUser = async () => {
       const user = await fetchOwner(userId);
 
-      if (user && user._id && user.isActive) {
+      if (user && user._id && user.isActive) 
+      {
         setOwner(user);
         localStorage.setItem("user", JSON.stringify(user));
         setAccountType(user?.role);
-      } else {
+      }
+      else
+      {
         toast.error("You are not authorized to view this page");
         localStorage.removeItem("user");
         localStorage.removeItem("authToken");
@@ -67,40 +72,50 @@ const Leads = () => {
 
   const getLeadsBySearch = async (e?: any) => {
     e && e.preventDefault();
-    try {
-      if (searchText?.trim()?.length > 0) {
+    try 
+    {
+      if (searchText?.trim()?.length > 0) 
+      {
         let { data } = await axios.get(
           `/leads/get-leads/search?&query=${searchText}`
         );
-        // console.log("forms", data);
-        if (!data.error) {
-          // setSearchResults(data);
+        if (!data.error) 
+        {
           setLeadsData(data.leads);
-        } else {
+        }
+        else
+        {
           toast.error(data.error);
         }
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.log("Error getting leads", error);
     }
   };
 
   useEffect(() => {
     const getLeads = async () => {
-      try {
+      try 
+      {
         setLoading(true);
         const { data } = await axios.get(
           `/leads/get-leads?page=${page}&limit=${PAGE_LIMIT}`
         );
-        // console.log(data);
-        if (!data.error) {
+        if (!data.error)
+        {
           setLeadsData(data.leads);
           setLeadsCount(data.leadsCount);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      }
+      catch (error: any)
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -111,17 +126,16 @@ const Leads = () => {
   }, [page, PAGE_LIMIT, reloadData]);
 
   const confirmLeadHandler = async (id?: string) => {
-    try {
-      // setUpdating(true);
+    try 
+    {
       const { data } = await axios.post("/leads/confirm-lead", {
         leadId: id,
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error)
+      {
         const leadIndex = leadsData.findIndex((lead: any) => lead._id === id);
-
-        // If the user is found in the array, replace the data at that index
-        if (leadIndex !== -1) {
+        if (leadIndex !== -1) 
+        {
           setLeadsData((prev: any) => {
             const updatedLeadData = [...prev];
             updatedLeadData[leadIndex] = data.lead;
@@ -129,12 +143,14 @@ const Leads = () => {
           });
         }
         toast.success(data.message);
-      } else {
+      } 
+      else 
+      {
         toast.error(data.error);
       }
-      // setUpdating(false);
-    } catch (error: any) {
-      // setUpdating(false);
+    }
+    catch (error: any) 
+    {
       console.log(error);
       toast.error(error.message);
     }
@@ -176,34 +192,11 @@ const Leads = () => {
               <FcNext />
             </button>
           </div>
-          {/* <div className="ml-4 py-2 px-2 h-full border shadow rounded text-xs font-medium"> */}
-          {/* <Select
-              id="hotel"
-              name="hotel"
-              options={[
-                { value: "all", label: "All Users" },
-                ...userData.map((user: any) => ({
-                  value: user._id,
-                  label: user.username,
-                })),
-              ]}
-              isMulti
-              value={"coming soon"}
-              onChange={() => {
-                toast.info("Search feature is not available yet");
-                // handleHotelSelection()
-              }}
-              className="w-[80px] outline-none ml-4 px-2 h-full shadow rounded text-xs font-medium"
-              isDisabled={loading}
-            /> */}
-          {/* </div> */}
         </div>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             getLeadsBySearch(e);
-
-            // toast.info("Search feature is not available yet");
           }}
           className="w-full h-full text-xs md:mt-0"
         >
@@ -220,8 +213,6 @@ const Leads = () => {
               className="min-w-[40px] flex justify-center items-center defaultBtn"
               onClick={(e) => {
                 getLeadsBySearch(e);
-                // e.preventDefault();
-                // toast.info("Search feature is not available yet");
               }}
             >
               <BiSearch className="text-xl" />
