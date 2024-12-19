@@ -2,9 +2,8 @@
 import axios from "@/utils/axios";
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from "react";
-import { toast } from "react-toastify";
 import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
-
+import { toast } from "react-toastify";
 interface Props {
   setWorkData: (works: any) => void;
   onClose: (value: boolean) => void;
@@ -20,19 +19,15 @@ const EditWork = ({
 }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const [selectedUser, setSelectedUser] = useState<any>({});
-  const [editingWorkData, setEditingWorkData] =
-    useState<any>(editingWorkDataProps);
+  const [editingWorkData, setEditingWorkData] = useState<any>(editingWorkDataProps);
   const [reactSelectOptions, setReactSelectOptions] = useState<any>([]);
-  // console.log("editingWorkData :)", editingWorkDataProps);
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
       try {
         const { data } = await axios.get("/user/get-users");
-        // console.log(data);
         if (!data.error) {
           setAvailableUsers(data.users);
           let options = data.users.map((user: any) => {
@@ -45,11 +40,11 @@ const EditWork = ({
             label: editingWorkDataProps.userName.name,
           });
 
-        } else {
-          // toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -64,7 +59,6 @@ const EditWork = ({
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
       if (formValues[key].trim() === "") {
@@ -75,7 +69,8 @@ const EditWork = ({
 
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    try {
+    try 
+    {
       setLoading(true);
       const { data } = await axios.post("/work/update-work", {
         workId: editingWorkData._id,
@@ -83,14 +78,14 @@ const EditWork = ({
         finishDeadline: formValues.finishDeadline,
         userName: formValues.user,
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error) 
+      {
         const workIndex = workData.findIndex(
           (work: any) => work._id === editingWorkData._id,
         );
 
-        // If the user is found in the array, replace the data at that index
-        if (workIndex !== -1) {
+        if (workIndex !== -1) 
+        {
           setWorkData((prev: any) => {
             const updatedWorkData = [...prev];
             updatedWorkData[workIndex] = data.work;
@@ -101,11 +96,15 @@ const EditWork = ({
         onClose(false);
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      } 
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
@@ -178,22 +177,6 @@ const EditWork = ({
             </div>
           )}
         </div>
-        {/*<div className="">*/}
-        {/*  <label*/}
-        {/*    htmlFor="user"*/}
-        {/*    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"*/}
-        {/*  >*/}
-        {/*    Modified Date*/}
-        {/*  </label>*/}
-        {/*  <input*/}
-        {/*    type="text"*/}
-        {/*    name="user"*/}
-        {/*    id="user"*/}
-        {/*    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:opacity-50"*/}
-        {/*    value={new Date(workData.updatedAt).toLocaleDateString()}*/}
-        {/*    readOnly*/}
-        {/*  />*/}
-        {/*</div>*/}
       </div>
       <div className="mb-4">
         <label
