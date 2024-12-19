@@ -1,4 +1,5 @@
-interface Props {
+interface Props 
+{
   setHotelData: (users: any) => void;
   onClose: (value: boolean) => void;
   editingHotelDataProps?: any;
@@ -6,7 +7,6 @@ interface Props {
 }
 
 import { FaTimes } from "react-icons/fa";
-
 import { toast } from "react-toastify";
 import axios from "@/utils/axios";
 import axios_ from "axios";
@@ -21,10 +21,10 @@ const EditHotel = ({
 }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [editingHotelData, setEditingHotelData] = useState<any>({});
-  const formRef = useRef<HTMLFormElement>(null);
   const [document, setDocument] = useState<any>(null);
   const [uploadingDocument, setUploadingDocument] = useState<boolean>(false);
-
+  const formRef = useRef<HTMLFormElement>(null);
+  
   useEffect(() => {
     setEditingHotelData(editingHotelDataProps);
   }, [editingHotelDataProps]);
@@ -32,10 +32,12 @@ const EditHotel = ({
   const handleFileInput = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
-    try {
+    try
+    {
       const file = e.target.files?.[0];
 
-      if (file) {
+      if (file)
+      {
         const reader = new FileReader();
 
         reader.onload = (event: ProgressEvent<FileReader>) => {
@@ -43,12 +45,12 @@ const EditHotel = ({
           setDocument(dataURL); // Set the Data URL to the state variable
         };
 
-        // Read the file as Data URL
         reader.readAsDataURL(file);
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error(error);
-      // Handle any errors that might occur during file processing
     }
   };
 
@@ -58,7 +60,6 @@ const EditHotel = ({
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
       if (formValues[key].trim() === "") {
@@ -71,31 +72,36 @@ const EditHotel = ({
     const numberRegex = /^[0-9]+$/;
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    if (!nameRegex.test(formValues.ownerName)) {
+    if (!nameRegex.test(formValues.ownerName)) 
+    {
       toast.error("Owner name should contain only alphabets");
       return;
     }
 
-    if (formValues.phoneNumber.length !== 10) {
+    if (formValues.phoneNumber.length !== 10)
+    {
       toast.error(
         "Phone number should contain only 10 numbers and don't include +91",
       );
       return;
     }
 
-    if (formValues.aadharNumber.length !== 12) {
+    if (formValues.aadharNumber.length !== 12)
+    {
       toast.error("Aadhar number should contain only 12 numbers");
       return;
     }
 
-    if (formValues.frontOfficeContact.length !== 10) {
+    if (formValues.frontOfficeContact.length !== 10)
+    {
       toast.error(
         "Front office contact should contain only 10 numbers and don't include +91",
       );
       return;
     }
 
-    try {
+    try
+    {
       setLoading(true);
       setUploadingDocument(true);
 
@@ -106,12 +112,9 @@ const EditHotel = ({
       const API_KEY = "578159845172363";
       const CLOUD_NAME = "drtr0suuh";
 
-      // console.log(API_KEY,CLOUD_NAME)
-
-      if (document) {
+      if (document) 
+      {
         const { data: sign } = await axios.post("/signature/get-sign");
-        // console.log(sign.signature,sign.timestamp)
-
         const { data: fileUrl } = await axios_.post(
           `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
           {
@@ -153,13 +156,12 @@ const EditHotel = ({
         frontOfficeContact: formValues.frontOfficeContact,
         roomCategories: formValues.roomCategories,
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error) 
+      {
         const hotelIndex = hotelData.findIndex(
           (hotel: any) => hotel._id === editingHotelDataProps._id,
         );
-
-        // If the user is found in the array, replace the data at that index
+        
         if (hotelIndex !== -1) {
           setHotelData((prev: any) => {
             const updatedHotelData = [...prev];
@@ -171,11 +173,15 @@ const EditHotel = ({
         onClose(false);
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      }
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    }
+    catch (error: any)
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
