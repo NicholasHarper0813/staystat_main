@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-
 import { TbLoader } from "react-icons/tb";
-
 import { InfinitySpin } from "react-loader-spinner";
 import { FaTimes } from "react-icons/fa";
 
-interface TableProps {
+interface TableProps 
+{
   date?: any;
   stayColor?: boolean;
   bookingData?: {
