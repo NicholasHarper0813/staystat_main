@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import {redirect, useRouter} from "next/navigation";
 import { fetchOwner } from "@/utils";
 import { toast } from "react-toastify";
-import {redirect, useRouter} from "next/navigation";
-
 
 const AdminProtector =  ({ children }: { children: React.ReactNode }) => {
 
@@ -15,11 +14,14 @@ const AdminProtector =  ({ children }: { children: React.ReactNode }) => {
         let userId = JSON.parse(localStorage.getItem("user") || "{}")?._id;
         let updateUser = async () => {
             const user = await fetchOwner(userId);
-            if (user && user._id && user.isActive) {
+            if (user && user._id && user.isActive)
+            {
                 setOwner(user);
                 localStorage.setItem("user", JSON.stringify(user));
                 setAccountType(user?.role);
-            } else {
+            }
+            else 
+            {
                 toast.error("You are not authorized to view this page");
                 localStorage.removeItem("user");
                 localStorage.removeItem("authToken");
@@ -29,12 +31,10 @@ const AdminProtector =  ({ children }: { children: React.ReactNode }) => {
         };
         updateUser();
     }, []);
-
-
-        if (accountType && accountType !== "ADMIN") {
+        if (accountType && accountType !== "ADMIN")
+        {
             redirect("/bookings");
         }
-
 
     return accountType === "ADMIN" ? children : null;
 };
