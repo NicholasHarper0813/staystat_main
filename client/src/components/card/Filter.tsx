@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
+import React, { useEffect, useState } from "react";
 import axios from "@/utils/axios";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 type Props = {
   usersData: any;
@@ -17,7 +17,6 @@ type Props = {
     totalDueAmt: number;
   };
 };
-// Function to remove time from a date
 
 const Filter = ({
   usersData,
@@ -55,18 +54,21 @@ const Filter = ({
 
   useEffect(() => {
     const getHotels = async () => {
-      try {
+      try 
+      {
         setLoading(true);
         const { data } = await axios.post(`/hotel/get-all-hotels`);
         const { data: users } = await axios.get(`/user/get-all-users`);
 
-        if (!data.error) {
+        if (!data.error) 
+        {
           setHotels(data.hotels);
           setUsers(users.users);
-        } else {
         }
         setLoading(false);
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         setLoading(false);
         console.log(error);
       }
