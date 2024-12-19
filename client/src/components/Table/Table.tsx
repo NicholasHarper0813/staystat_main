@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import axios from "@/utils/axios";
+import EditUser from "../card/EditUser";
 import { MdWarningAmber } from "react-icons/md";
 import { TbLoader } from "react-icons/tb";
 import { FiEdit, FiExternalLink } from "react-icons/fi";
@@ -7,10 +9,9 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlineEye } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "@/utils/axios";
-import EditUser from "../card/EditUser";
 import { InfinitySpin } from "react-loader-spinner";
 import { FaTimes } from "react-icons/fa";
+
 interface TableProps {
   userData: {
     name?: string;
