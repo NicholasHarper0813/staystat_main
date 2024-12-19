@@ -49,18 +49,14 @@ const ViewHotel = ({
 }: Props) => {
   const [showDeletePopup, setShowDeletePopUp] = useState<boolean>(false);
   const [showStatusPopup, setShowStatusPopUp] = useState<boolean>(false);
-  // console.log(hotel, "userdata");
-
   const handleShowDeleteModal = (event: any) => {
     event.preventDefault();
     setShowDeletePopUp(true);
-    // onClose(false)
   };
 
   const handleShowStatusModal = (event: any) => {
     event.preventDefault();
     setShowStatusPopUp(true);
-    // onClose(false)
   };
 
   return (
