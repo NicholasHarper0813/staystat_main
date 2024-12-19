@@ -3,7 +3,6 @@ interface Props {
   onClose: (value: boolean) => void;
 }
 import { FaTimes } from "react-icons/fa";
-
 import { toast } from "react-toastify";
 import axios from "@/utils/axios";
 import axios_ from "axios";
@@ -12,7 +11,6 @@ import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
  
 const InputHotel = ({ setHotelData, onClose }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
-
   const [uploadingDocument, setUploadingDocument] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -23,10 +21,12 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
   const handleFileInput = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
-    try {
+    try 
+    {
       const file = e.target.files?.[0];
 
-      if (file) {
+      if (file) 
+      {
         const reader = new FileReader();
 
         reader.onload = (event: ProgressEvent<FileReader>) => {
@@ -34,12 +34,12 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
           setDocument(dataURL); // Set the Data URL to the state variable
         };
 
-        // Read the file as Data URL
         reader.readAsDataURL(file);
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error(error);
-      // Handle any errors that might occur during file processing
     }
   };
 
@@ -50,27 +50,26 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
     const formValues: { [key: string]: string } = {};
     let roomCategories: string[] = []
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
 
-      if( key === "roomCategories"){
+      if( key === "roomCategories")
+      {
         roomCategories = value.toString().split(",")
         console.log(roomCategories)
       }
 
-      if (formValues[key].trim() === "") {
+      if (formValues[key].trim() === "")
+      {
         toast.error("Please fill all the fields");
         return;
       }
     });
 
-    // console.log(formValues)
     const numberRegex = /^[0-9]+$/;
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    if (
-      formValues.hotelName.trim() === "" ||
+    if ( formValues.hotelName.trim() === "" ||
       formValues.location.trim() === "" ||
       formValues.ownerName.trim() === "" ||
       formValues.phoneNumber.trim() === "" ||
@@ -79,56 +78,47 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
       formValues.panNumber.trim() === "" ||
       formValues.aadharNumber.trim() === "" ||
       formValues.tradeLicense.trim() === "" ||
-      formValues.frontOfficeContact.trim() === ""
-    ) {
+      formValues.frontOfficeContact.trim() === "") 
+    {
       toast.error("Please fill all the fields");
       return;
     }
 
-    if (!nameRegex.test(formValues.ownerName)) {
+    if (!nameRegex.test(formValues.ownerName))
+    {
       toast.error("Owner name should contain only alphabets");
       return;
     }
 
-    if (
-      !numberRegex.test(formValues.phoneNumber) ||
-      formValues.phoneNumber.length !== 10
-    ) {
+    if ( !numberRegex.test(formValues.phoneNumber) ||
+      formValues.phoneNumber.length !== 10 ) 
+    {
       toast.error(
         "Phone number should contain only 10 numbers and don't include +91",
       );
       return;
     }
 
-    if (formValues.aadharNumber.length !== 12) {
-      // console.log(!numberRegex.test(formValues.aadharNumber))
+    if (formValues.aadharNumber.length !== 12) 
+    {
       toast.error("Aadhar number should contain only 12 numbers");
       return;
     }
 
-    if (
-      !numberRegex.test(formValues.frontOfficeContact) ||
-      formValues.frontOfficeContact.length !== 10
-    ) {
-      toast.error(
-        "Front office contact should contain only 10 numbers and don't include +91",
-      );
+    if ( !numberRegex.test(formValues.frontOfficeContact) ||
+      formValues.frontOfficeContact.length !== 10)
+    {
+      toast.error("Front office contact should contain only 10 numbers and don't include +91");
       return;
     }
 
-    try {
-      // console.log(document)
+    try 
+    {
       setLoading(true);
       setUploadingDocument(true);
       const API_KEY = "578159845172363";
       const CLOUD_NAME = "drtr0suuh";
-
-      // console.log(API_KEY,CLOUD_NAME)
-
       const { data: sign } = await axios.post("/signature/get-sign");
-      // console.log(sign.signature,sign.timestamp)
-      // console.log(document)
-
       const { data: fileUrl } = await axios_.post(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`,
         {
@@ -159,10 +149,8 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
           frontOfficeContact: formValues.frontOfficeContact,
           roomCategories: roomCategories
         });
-        if (!data.error) {
-          // const { data } = await axios.get("/hotel/get-all-hotels")
-  
-          // console.log(data.hotel)
+        if (!data.error)
+        {
           setHotelData((prev: any) => {
             return [data.hotel, ...prev];
           });
@@ -171,21 +159,21 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
   
           toast.success(data.message);
           formRef.current?.reset();
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
         setLoading(false);
-
       } 
-      else{
+      else
+      {
         setLoading(false);
         toast.error("Upload failed");
       }
-        
-      
-
-      
-    } catch (error: any) {
+    }
+    catch (error: any) 
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
@@ -241,16 +229,12 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option selected disabled>--Choose--</option>
-
             <option value="MANDARMANI">MANDARMANI</option>
             <option value="TAJPUR">TAJPUR</option>
             <option value="OLD DIGHA">OLD DIGHA</option>
             <option value="NEW DIGHA">NEW DIGHA</option>
             <option value="BAGDOGRA">BAGDOGRA</option>
             <option value="TARAPITH">TARAPITH</option>
-
-
-            
           </select>
         </div>
         <div>
@@ -327,7 +311,6 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
             placeholder="GST Number"
             required
             minLength={15}
-            // autoCapitalize="on"
           />
         </div>
         <div className="">
