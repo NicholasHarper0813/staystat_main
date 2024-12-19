@@ -27,17 +27,18 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
   const [selectedAccountOption, setSelectedAccountOption] =
     useState("--Choose--");
 
-  // console.log("inputbooking", user);
   useEffect(() => {
     const getHotels = async () => {
       setLoading(true);
-      try {
+      try 
+      {
         setAvailableHotels(user.hotel);
         setLoading(false);
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         setLoading(false);
         toast.error(error.message);
-        // console.log(error);
       }
     };
     getHotels();
@@ -60,7 +61,8 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
 
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
-    if (input.length <= 10) {
+    if (input.length <= 10)
+    {
       setPhoneNumber(input);
     }
   };
@@ -77,10 +79,13 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
     const bookingValue = parseFloat(booking);
     const advanceValue = parseFloat(advance);
 
-    if (!isNaN(bookingValue) && !isNaN(advanceValue)) {
+    if (!isNaN(bookingValue) && !isNaN(advanceValue)) 
+    {
       const due = bookingValue - advanceValue;
       setDueAmount(due.toFixed(2));
-    } else {
+    } 
+    else 
+    {
       setDueAmount("");
     }
   };
@@ -88,13 +93,14 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
   const handleCheckInDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputDate = e.target.value;
     const [year, month, day] = inputDate.split("-");
-
-    let fullYear = year;
     const currentYear = new Date().getFullYear().toString();
-
-    if (year.toString().slice(0, 3) !== "000") {
+    let fullYear = year;
+    
+    if (year.toString().slice(0, 3) !== "000") 
+    {
       fullYear = `20${year.toString().slice(-2)}`;
-      if (fullYear.slice(-2) !== currentYear.slice(-2)) {
+      if (fullYear.slice(-2) !== currentYear.slice(-2)) 
+      {
         toast.warning("Check-in Date does not match the current year !!");
         toast.clearWaitingQueue();
       }
@@ -108,13 +114,14 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
   const handleCheckOutDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputDate = e.target.value;
     const [year, month, day] = inputDate.split("-");
-
-    let fullYear = year;
     const currentYear = new Date().getFullYear().toString();
-
-    if (year.toString().slice(0, 3) !== "000") {
+    let fullYear = year;
+    
+    if (year.toString().slice(0, 3) !== "000")
+    {
       fullYear = `20${year.toString().slice(-2)}`;
-      if (fullYear.slice(-2) !== currentYear.slice(-2)) {
+      if (fullYear.slice(-2) !== currentYear.slice(-2))
+      {
         toast.warning("Check-Out Date does not match the current year !!");
         toast.clearWaitingQueue();
       }
@@ -128,13 +135,14 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
   const handleAdvanceDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputDate = e.target.value;
     const [year, month, day] = inputDate.split("-");
-
-    let fullYear = year;
     const currentYear = new Date().getFullYear().toString();
-
-    if (year.toString().slice(0, 3) !== "000") {
+    let fullYear = year;
+    
+    if (year.toString().slice(0, 3) !== "000")
+    {
       fullYear = `20${year.toString().slice(-2)}`;
-      if (fullYear.slice(-2) !== currentYear.slice(-2)) {
+      if (fullYear.slice(-2) !== currentYear.slice(-2))
+      {
         toast.warning("Advance Date does not match the current year !!");
         toast.clearWaitingQueue();
       }
@@ -152,15 +160,16 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
     const formValues: { [key: string]: string } = {};
     console.log(formValues);
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
-      if (formValues[key] === "Choose") {
-        // console.log("formValues[key]", formValues[key]);
+      if (formValues[key] === "Choose")
+      {
         toast.error("Please select a valid booking source");
       }
-      if (formValues[key].trim() === "") {
-        if (key !== "remark" && key !== "guestEmail") {
+      if (formValues[key].trim() === "") 
+      {
+        if (key !== "remark" && key !== "guestEmail") 
+        {
           toast.error("Please fill all the fields");
         }
 
@@ -168,69 +177,68 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
       }
     });
 
-    // console.log(formValues);
-
     const numberRegex = /^[0-9]+$/;
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    // if(formValues.hotel.trim() === "" || formValues.guest_name.trim() === "" || formValues.startDate.trim() === "" || formValues.endDate.trim() === "" || formValues.roomCategory.trim() === "" || formValues.nor.trim() === "" || formValues.nop.trim() === "" || formValues.bookingAmount.trim() === "" || formValues.advanceAmount.trim() === "" || formValues.dueamount.trim() === "" || formValues.Advancedate.trim() === "" || formValues.paymentby.trim() === "" || formValues.plan.trim() === "" || formValues.cn.trim() === ""){
-    //   toast.error("Please fill all the fields");
-    //   return;
-    // }
-
-    if (formValues.nor.trim() === "") {
+    if (formValues.nor.trim() === "") 
+    {
       toast.error("Please enter a valid number of rooms");
       return;
     }
 
-    if (formValues.nop.trim() === "") {
+    if (formValues.nop.trim() === "")
+    {
       toast.error("Please enter a valid number of persons");
       return;
     }
 
-    if (formValues.Advancedate.trim() === "") {
+    if (formValues.Advancedate.trim() === "") 
+    {
       toast.error("Please enter a valid advance date");
       return;
     }
 
-    if (!formValues.hotel || formValues.hotel.trim() === "") {
+    if (!formValues.hotel || formValues.hotel.trim() === "")
+    {
       toast.error("Please select a valid hotel ");
       return;
     }
-    if (!formValues.accountType || formValues.accountType.trim() === "") {
+    
+    if (!formValues.accountType || formValues.accountType.trim() === "")
+    {
       toast.error("Please enter a valid account type");
       return;
     }
 
-    if (!formValues.plan || formValues.plan.trim() === "") {
+    if (!formValues.plan || formValues.plan.trim() === "") 
+    {
       toast.error("Please enter a valid plan");
       return;
     }
 
-    if (!formValues.paymentby || formValues.paymentby.trim() === "") {
+    if (!formValues.paymentby || formValues.paymentby.trim() === "") 
+    {
       // console.log("formValues.bookingSource", formValues.paymentby);
       toast.error("Please enter a valid booking source");
       return;
     }
 
-    if (
-      formValues.cn.trim() === "" ||
+    if ( formValues.cn.trim() === "" ||
       !numberRegex.test(formValues.cn.trim()) ||
-      formValues.cn.trim().length !== 10
-    ) {
-      // console.log("formValues.cn", formValues.cn.trim().length);
+      formValues.cn.trim().length !== 10 ) 
+    {
       toast.error("Please enter a valid contact number and don't include +91");
       return;
     }
 
-    if (Number(formValues.advanceAmount) > Number(formValues.bookingAmount)) {
-      // console.log("formValues.advanceAmount", formValues.advanceAmount);
-      // console.log("formValues.bookingAmount", formValues.bookingAmount);
+    if (Number(formValues.advanceAmount) > Number(formValues.bookingAmount))
+    {
       toast.error("Advance amount should be less than booking amount");
       return;
     }
 
-    try {
+    try 
+    {
       setLoading(true);
       const { data } = await axios.post("/booking/create-booking", {
         hotel: formValues.hotel,
@@ -252,8 +260,8 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
         guestEmail: formValues.guestEmail,
         remarks: formValues.remark,
       });
-      if (!data.error) {
-        // console.log(data.booking);
+      if (!data.error)
+      {
         setBookingData((prev: any) => {
           return [data.booking, ...prev];
         });
@@ -273,13 +281,16 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
 
         formRef.current?.reset();
         toast.success(data.message);
-      } else {
+      }
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       setLoading(false);
-      // console.log(error);
       toast.error(error.message);
     }
   };
@@ -384,11 +395,6 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
               onChange={handleCheckInDateChange}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required
-              // min={
-              //   user.role !== "ADMIN"
-              //     ? new Date().toISOString().split("T")[0]
-              //     : ""
-              // }
             />
           </div>
           <div>
