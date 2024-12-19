@@ -1,10 +1,10 @@
+import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { AiOutlineEye } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdFileDownloadDone } from "react-icons/md";
-import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 
 interface Props {
   workData: {
@@ -42,9 +42,6 @@ const ViewWorks = ({
   const [showRemarksPopup, setShowRemarksPopup] = useState<boolean>(false);
   const [action, setAction] = useState<string>("");
   const [remarks, setRemarks] = useState<string>("");
-  // console.log("workData :)", workData);
-  // @ts-ignore
-
   const handleShowDeleteModal = (event: any) => {
     event.preventDefault();
     setShowDeletePopUp(true);
@@ -207,7 +204,6 @@ const ViewWorks = ({
               </button>
             </div>
           )}
-          
         </div>
         </TailwindWrapper>
       </form>
