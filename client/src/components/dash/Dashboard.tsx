@@ -1,17 +1,12 @@
 "use client";
 
-//✅ React Imports
 import React, {useEffect, useState} from "react";
-
-//✅ Redux Imports
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "@/lib/redux/store";
 import {
     fetchAllBookingsAsync,
     selectAllbookings,
 } from "@/lib/features/bookingSlice";
-
-//✅ Widget
 import {
     endOfMonth,
     endOfWeek, endOfYear,
@@ -22,12 +17,8 @@ import {
     subDays, subMonths, subYears
 } from "date-fns";
 
-//✅ Wrapper
 import TailwindWrapper from "@/components/dash/Components/Wrapper/TailwindWrapper";
-
-//✅ Types
 import {BookingData} from "@/lib/Types/Dashboard/types";
-//✅ Top Box Import
 import TodaysCancelledBooking from "@/components/dash/Templates/TopBox/TodaysCancelledBooking";
 import TotalRevenue from "@/components/dash/Templates/TopBox/TotalRevenue";
 import Checkin from "@/components/dash/Templates/TopBox/Checkin";
@@ -38,14 +29,11 @@ import TotalUsers from "@/components/dash/Templates/TopBox/TotalUsers";
 import TotalDue from "@/components/dash/Templates/TopBox/TotalDue";
 import TotalHotels from "@/components/dash/Templates/TopBox/TotalHotels";
 
-//✅ Middle Box Import
 import RevenueChart from "@/components/dash/Templates/MiddleBox/AreaChartRevBookDate";
 import RevenueCheckinAreaChart from "@/components/dash/Templates/MiddleBox/AreaChartRevCheckinDate";
 import AreaChartBookingBookingDate from "@/components/dash/Templates/MiddleBox/AreaChartBookingBookingDate";
 import AreaChartBookingCheckinDate from "@/components/dash/Templates/MiddleBox/AreaChartBookingCheckinDate";
 
-//✅ Bottom Box Import
-//❗ OTT Performance
 import RevenueBarChartRBT from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBAT";
 import RevenueBarChartBATW from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATW";
 import RevenueBarChartBATLW from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATLW";
@@ -61,7 +49,6 @@ import BookingCountBarChartBCTLY from "@/components/dash/Templates/BottomBox/Ota
 import BookingCountBarChartBCTY from "@/components/dash/Templates/BottomBox/OtaPerformance/BookingTime/BarChartBCTY";
 import RevenueBarChartBATLM from "@/components/dash/Templates/BottomBox/OtaPerformance/RevenueTime/BarChartBATLM";
 
-//❗ Hotel Wise
 import HotelWiseRevenueBarChartRBT
     from "@/components/dash/Templates/BottomBox/HotelPerformance/RevenueTime/BarChartBAT";
 import HotelWiseRevenueBarChartBATW
@@ -91,8 +78,6 @@ import HotelWiseBookingCountBarChartBCTLY
 import HotelWiseBookingCountBarChartBCTY
     from "@/components/dash/Templates/BottomBox/HotelPerformance/BookingTime/BarChartBCTY";
 
-
-//❗ User Wise
 import UserWiseRevenueBarChartRBT from "@/components/dash/Templates/BottomBox/UserPerformance/RevenueTime/BarChartBAT";
 import UserWiseRevenueBarChartBATW
     from "@/components/dash/Templates/BottomBox/UserPerformance/RevenueTime/BarChartBATW";
@@ -121,7 +106,6 @@ import UserWiseBookingCountBarChartBCTLY
 import UserWiseBookingCountBarChartBCTY
     from "@/components/dash/Templates/BottomBox/UserPerformance/BookingTime/BarChartBCTY";
 
-//❗ Location Wise
 import LocationWiseRevenueBarChartRBT
     from "@/components/dash/Templates/BottomBox/LocationPerformance/RevenueTime/BarChartBAT";
 import LocationWiseRevenueBarChartBATW
@@ -153,7 +137,6 @@ import LocationWiseBookingCountBarChartBCTY
 import UpcomingTotalRevenue from "@/components/dash/Templates/TopBox/UpcomingTotalRevenue";
 
 const Dashboard = () => {
-//✅ State for managing the filters
     const dispatch: AppDispatch = useDispatch();
     const [totalRevenuerbcd, setTotalRevenuerbcd] = useState(0);
     const [totalRevenuerbdb, setTotalRevenuerbdb] = useState(0);
@@ -178,119 +161,63 @@ const Dashboard = () => {
         setDate(newDate);
     };
 
-//✅ Fetch All Bookings Data
     useEffect(() => {
         dispatch(fetchAllBookingsAsync())
     }, []);
 
 const bookingData: BookingData[] = useSelector(selectAllbookings);
-
-
-
-//⚙️ Filters=Revenue-Booking , Revenue-Checkin , Booking-Booking , Booking-Checkin
 const userDeactive =  bookingData.filter((item: any) => item?.addedBy?.isActive === true);
-
-// console.log(bookingData.map((item: any) => item?.addedBy?.username) + "bookingData");
-
-// console.log(userDeactive + "userDeactive");
 const hotelDeactive =  bookingData.filter((item: any) => item?.hotel?.isActive === true);
 const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CONFIRMED");
-
-
-
-
-//✅ Middle Chart Data
-//____________________________________________________________________________________________________________________________
-//❗Chart Data - Last 30 days
-
-
-
-    //✔️Required Data=Revenue-Booking, Revenue-Checkin, Booking-Booking, Booking-Checkin
-
     const createdAt = confirmedFilter.map((item: any) => item?.createdAt);
     const bookingAmount = confirmedFilter.map((item: any) => item?.bookingAmount);
     const checkInDate = confirmedFilter.map((item: any) => item?.checkInDate);
     const bookingCount = confirmedFilter.map((item: any) => item?.bookingAmount.length);
     const bookingDate = confirmedFilter.map((item: any) => item?.createdAt);
-
-    //✔️Combine Data=Revenue-Booking, Revenue-Checkin, Booking-Booking, Booking-Checkin
-
-    //1.>>>Revenue-Booking
     const revenueAndBooking = confirmedFilter.map((item: any, i: any) => ({
         createdAt: createdAt[i],
         advanceAmount: bookingAmount[i],
     }));
-
-    //2.>>>Revenue-Checkin
     const revenueAndCheckin = confirmedFilter.map((item: any, i: any) => ({
         checkInDate: checkInDate[i],
         bookingAmount: bookingAmount[i],
     }));
-
-    //3.>>>Booking-Booking
     const bookingAndBooking = confirmedFilter.map((item: any, i: any) => ({
         createdAt: bookingDate[i],
         bookingAmount: bookingCount[i],
     }));
-
-    //4.>>>Booking-Checkin
     const bookingAndCheckin = confirmedFilter.map((item: any, i: any) => ({
         checkInDate: checkInDate[i],
         bookingAmount: bookingCount[i],
     }));
 
-
-
-//✅ Bottom Chart Data
-//____________________________________________________________________________________________________________________________
-//❗Chart Data - Hotel Wise, Booking Source Wise, User Wise, Location Wise
-
-
-    //✔️Required Data=Booking Source Wise, Hotel Wise, User Wise, Location Wise
     const bookingSource: string[] = confirmedFilter.map((item: any) => item?.bookingSource);
     const bookingAmountBar: number[] = confirmedFilter.map((item: any) => item?.bookingAmount);
     const createdDate: string[] = confirmedFilter.map((item: any) => item?.createdAt);
     const hotelNames: string[] = confirmedFilter.map((item: any) => item?.hotel?.hotelName);
     const userName: string[] = confirmedFilter.map((item: any) => item?.bookingBy);
     const locationName: string[] = confirmedFilter.map((item: any) => item?.hotel?.location);
-
-    //✔️Combine Data=Booking Source Wise, Hotel Wise, User Wise, Location Wise
-
-    //1.>>>Booking Source
     const bookingAndAmountToday = confirmedFilter.map((item: any, i: any) => ({
         bookingSource: bookingSource[i],
         bookingAmount: bookingAmountBar[i],
         createdAt: createdDate[i],
     }));
-   //2.>>>Hotel Wise
     const HotelWiseBookingAndAmountToday = confirmedFilter.map((item: any, i: any) => ({
         hotelName: hotelNames[i],
         bookingAmount: bookingAmountBar[i],
         createdAt: createdDate[i],
     }));
-    //3.>>>User Wise
     const userWiseBookingAndAmountToday = confirmedFilter.map((item: any, i: any) => ({
         userName: userName[i],
         bookingAmount: bookingAmountBar[i],
         createdAt: createdDate[i],
     }));
-    //4.>>>Location Wise
     const locationWiseBookingAndAmountToday = confirmedFilter.map((item: any, i: any) => ({
         locationName: locationName[i],
         bookingAmount: bookingAmountBar[i],
         createdAt: createdDate[i],
     }));
 
-//____________________________________________________________________________________________________________________________
-
-
-//✅ Widget Data
-//____________________________________________________________________________________________________________________________
-//❗Chart Data - Hotel Wise, Booking Source Wise, User Wise, Location Wise
-
-    //✔️ Last 30 days
-
-    //1.>>>Revenue-Checkin-Date
     useEffect(() => {
         const thirtyDaysAgo = subDays(new Date(), 30);
         const last30DaysRevenueData = revenueAndCheckin.filter(
@@ -304,8 +231,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
 
         setTotalRevenuerbcd(totalRevenueLast30Days);
     }, [revenueAndCheckin]);
-
-    //2.>>>Revenue-Booking-Date
     useEffect(() => {
         const thirtyDaysAgo = subDays(new Date(), 30);
         const last30DaysRevenueData = revenueAndBooking.filter(
@@ -319,8 +244,7 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
 
         setTotalRevenuerbdb(totalRevenueLast30Days);
     }, [revenueAndBooking]);
-
-    //3.>>>Booking-CheckIn-Date
+    
     useEffect(() => {
         const thirtyDaysAgo = subDays(new Date(), 30);
         const last30DaysRevenueDataBBBD = confirmedFilter.filter(
@@ -342,12 +266,7 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setTotalRevenuebbcd(totalRevenuebbcd);
     }, [confirmedFilter]);
 
-
-
-    //✔️ Booking Source Wise, Hotel Wise, User Wise, Location Wise
-
-    //1.1>>>Today-Booking-Ota-Total
-    const [todayBookingOtaTotal, setTodayBookingOtaTotal] = useState<number>(0);
+   const [todayBookingOtaTotal, setTodayBookingOtaTotal] = useState<number>(0);
     useEffect(() => {
         const today = new Date();
         const todayBookings = confirmedFilter.filter(
@@ -357,7 +276,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setTodayBookingOtaTotal(totalBookingsToday);
     }, [bookingData]);
 
-    //1.2>>>Today-Revenue-Ota-Total
     const [todayRevenueOtaTotal, setTodayRevenueOtaTotal] = useState<number>(0);
     useEffect(() => {
         const today = new Date();
@@ -373,7 +291,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setTodayRevenueOtaTotal(totalRevenueToday);
     }, [bookingData]);
 
-    //2.1>>>Week-Booking-Ota-Total
     const [weekBookingTotal, setWeekBookingTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -394,7 +311,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setWeekBookingTotal(totalBookingsWeek);
     }, [bookingData]);
 
-    //2.2>>>Week-Revenue-Ota-Total
     const [weekRevenueTotal, setWeekRevenueTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -417,7 +333,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setWeekRevenueTotal(totalRevenueForWeek);
     }, [bookingData]);
 
-    //3.1>>>Previous-Week-Booking-Ota-Total
     const [previousWeekBookingTotal, setPreviousWeekBookingTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -438,7 +353,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setPreviousWeekBookingTotal(totalBookingsPreviousWeek);
     }, [bookingData]);
 
-    //3.2>>>Previous-Week-Revenue-Ota-Total
     const [previousWeekRevenueTotal, setPreviousWeekRevenueTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -461,8 +375,7 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setPreviousWeekRevenueTotal(totalRevenuePreviousWeek);
     }, [bookingData]);
 
-    //4.1>>>This-Month-Booking-Ota-Total
-    const [thisMonthBookingTotal, setThisMonthBookingTotal] = useState<number>(0);
+   const [thisMonthBookingTotal, setThisMonthBookingTotal] = useState<number>(0);
 
     useEffect(() => {
         const currentDate: Date = new Date();
@@ -482,7 +395,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setThisMonthBookingTotal(totalBookingsThisMonth);
     }, [bookingData]);
 
-    //4.2>>>This-Month-Revenue-Ota-Total
     const [thisMonthRevenueTotal, setThisMonthRevenueTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -506,7 +418,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setThisMonthRevenueTotal(totalRevenueThisMonth);
     }, [bookingData]);
 
-    //5.1>>>Previous-Month-Booking-Ota-Total
     const [previousMonthBookingTotal, setPreviousMonthBookingTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -527,14 +438,12 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setPreviousMonthBookingTotal(totalBookingsPreviousMonth);
     }, [bookingData]);
 
-    //5.2>>>Previous-Month-Revenue-Ota-Total
     const [previousMonthRevenueTotal, setPreviousMonthRevenueTotal] = useState<number>(0);
 
     useEffect(() => {
         const currentDate: Date = new Date();
         const startOfPreviousMonth: Date = startOfMonth(subMonths(currentDate, 1));
         const endOfPreviousMonth: Date = endOfMonth(subMonths(currentDate, 1));
-
         const previousMonthRevenueData = revenueAndBooking.filter(
             (dataPoint) =>
                 isWithinInterval(new Date(dataPoint.createdAt), {
@@ -544,14 +453,11 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         );
 
         const totalRevenuePreviousMonth: number = previousMonthRevenueData.reduce(
-            (total, dataPoint) => total + parseFloat(dataPoint.advanceAmount),
-            0
-        );
+            (total, dataPoint) => total + parseFloat(dataPoint.advanceAmount), 0);
 
         setPreviousMonthRevenueTotal(totalRevenuePreviousMonth);
     }, [bookingData]);
 
-    //6.1>>>This-Year-Booking-Ota-Total
     const [thisYearBookingTotal, setThisYearBookingTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -571,8 +477,7 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
 
         setThisYearBookingTotal(totalBookingsThisYear);
     }, [bookingData]);
-
-    //6.2>>>This-Year-Revenue-Ota-Total
+    
     const [thisYearRevenueTotal, setThisYearRevenueTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -596,7 +501,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setThisYearRevenueTotal(totalRevenueThisYear);
     }, [bookingData]);
 
-    //7.1>>>Previous-Year-Booking-Ota-Total
     const [previousYearBookingTotal, setPreviousYearBookingTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -616,8 +520,7 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
 
         setPreviousYearBookingTotal(totalBookingsPreviousYear);
     }, [bookingData]);
-
-    //7.2>>>Previous-Year-Revenue-Ota-Total
+    
     const [previousYearRevenueTotal, setPreviousYearRevenueTotal] = useState<number>(0);
 
     useEffect(() => {
@@ -641,7 +544,6 @@ const confirmedFilter = hotelDeactive.filter((item: any) => item.status === "CON
         setPreviousYearRevenueTotal(totalRevenuePreviousYear);
     }, [bookingData]);
 
-//____________________________________________________________________________________________________________________________
 return (
         <>
             <div>
