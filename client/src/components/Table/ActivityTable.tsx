@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import axios from "@/utils/axios";
+import EditUser from "../card/EditUser";
 import { MdWarningAmber } from "react-icons/md";
 import { TbLoader } from "react-icons/tb";
 import { FiEdit, FiExternalLink } from "react-icons/fi";
@@ -7,8 +9,6 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { AiOutlineEye } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
-import axios from "@/utils/axios";
-import EditUser from "../card/EditUser";
 import { InfinitySpin } from "react-loader-spinner";
 import { FaTimes } from "react-icons/fa";
 interface TableProps {
@@ -24,8 +24,6 @@ interface TableProps {
 }
 
 const ActivityTable = ({ activityData, owner, loading }: TableProps) => {
-  // console.log(userData, "userdata");
-
   const [userId, setUserId] = useState<string>("");
 
   return (
@@ -65,8 +63,6 @@ const ActivityTable = ({ activityData, owner, loading }: TableProps) => {
                   </div>
                 ) : (
                   activityData.map((activity: any, index: number) => {
-                    // console.log(user.name);
-
                     return (
                       <tr
                         key={index}
