@@ -6,8 +6,10 @@ import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdFileDownloadDone } from "react-icons/md";
 
-interface Props {
-  workData: {
+interface Props 
+{
+  workData: 
+  {
     _id: string;
     userName?: { name: string; _id: string; userName: string };
     workDetails?: string;
