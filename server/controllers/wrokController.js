@@ -1,6 +1,7 @@
-const { Work } = require("../models/workModel");
 const { User } = require("../models/userModel");
-const createWork = async (req, res) => {
+const { Work } = require("../models/workModel");
+const createWork = async (req, res) => 
+{
   const workCount = await Work.countDocuments();
 
   if (req.user.role !== "ADMIN") 
