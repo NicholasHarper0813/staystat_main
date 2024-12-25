@@ -4,7 +4,8 @@ import Select from "react-select";
 import React, { useState, useEffect, useRef } from "react";
 import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 import { toast } from "react-toastify";
-interface Props {
+interface Props 
+{
   setWorkData: (works: any) => void;
   onClose: (value: boolean) => void;
   editingWorkDataProps: any;
@@ -26,9 +27,11 @@ const EditWork = ({
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
-      try {
+      try 
+      {
         const { data } = await axios.get("/user/get-users");
-        if (!data.error) {
+        if (!data.error) 
+        {
           setAvailableUsers(data.users);
           let options = data.users.map((user: any) => {
             return { value: user._id, label: user.name };
@@ -39,7 +42,6 @@ const EditWork = ({
             value: editingWorkDataProps.userName._id,
             label: editingWorkDataProps.userName.name,
           });
-
         }
         setLoading(false);
       } 
@@ -55,20 +57,19 @@ const EditWork = ({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
     formData.forEach((value, key) => {
       formValues[key] = value as string;
-      if (formValues[key].trim() === "") {
+      if (formValues[key].trim() === "") 
+      {
         toast.error("Please fill all the fields");
         return;
       }
     });
 
     const nameRegex = /^[a-zA-Z ]+$/;
-
     try 
     {
       setLoading(true);
