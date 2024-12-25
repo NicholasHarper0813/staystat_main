@@ -173,7 +173,8 @@ const updateLead = async (req, res) => {
 const confirmLead = async (req, res) => {
   console.log("Confirm Lead ===>");
   let { leadId } = req.body;
-  try {
+  try 
+  {
     const updatedLead = await Leads.findByIdAndUpdate(
       leadId,
       { status: "CONFIRMED", approvedBy: req.user._id },
@@ -183,19 +184,22 @@ const confirmLead = async (req, res) => {
       { path: "approvedBy", model: User, select: "name email username" },
     ]);
 
-    if (!updatedLead) {
+    if (!updatedLead) 
+    {
       res.status(200).json({
         error: "No leads found",
         leads: [],
       });
       return;
     } 
-    else {
+    else 
+    {
       res.status(200).json({ lead: updatedLead, message: "Lead Confirmed" });
       return;
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("Lead Confirm error ===>: ", error);
     res.status(500).json({
       message: "Something went wrong",
@@ -203,14 +207,16 @@ const confirmLead = async (req, res) => {
   }
 };
 
-function escapeRegex(text) {
+function escapeRegex(text) 
+{
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
 const getLeadsBySearch = async (req, res) => {
   const currentDateTime = new Date();
   const { query } = req.query;
-  try {
+  try 
+  {
     const regex = new RegExp(escapeRegex(query), "gi");
     const matchingUserIds = await User.find({
       $or: [{ name: regex }, { username: regex }],
@@ -245,23 +251,27 @@ const getLeadsBySearch = async (req, res) => {
         select: "name email username",
       });
 
-    if (leads.length > 0) {
+    if (leads.length > 0) 
+    {
       res.status(200).json({ leads, message: "leads fetched successfully" });
     } 
-    else {
+    else 
+    {
       res
         .status(200)
         .json({ leads, message: "No result found for this search" });
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("Get leads by search error ===>: ", error);
     res.status(500).json({ error: error.message });
     throw new Error(error);
   }
 };
 
-module.exports = {
+module.exports = 
+{
   createLead,
   getLeads,
   updateLead,
