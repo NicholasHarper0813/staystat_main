@@ -38,7 +38,8 @@ const Users = () => {
   const [editingUserData, setEditingUserData] = useState<any>({});
 
   useEffect(() => {
-    if (showModal || showViewModal) {
+    if (showModal || showViewModal) 
+    {
       document.body.style.overflow = "hidden";
     } 
     else {
@@ -46,15 +47,18 @@ const Users = () => {
     }
   }, [showViewModal, showModal]);
 
-  useEffect(() => {
+  useEffect(() => 
+  {
     let userId = JSON.parse(localStorage.getItem("user") || "{}")?._id;
     let updateUser = async () => {
       const user = await fetchOwner(userId);
 
-      if (user.role !== "ADMIN") {
+      if (user.role !== "ADMIN") 
+      {
         window.location.href = "/bookings";
       }
-      if (user && user._id && user.isActive) {
+      if (user && user._id && user.isActive) 
+      {
         setOwner(user);
         localStorage.setItem("user", JSON.stringify(user));
         setAccountType(user?.role);
@@ -71,35 +75,44 @@ const Users = () => {
 
   const getUsersBySearch = async (e?: any) => {
     e && e.preventDefault();
-    try {
-      if (searchText?.trim()?.length > 0) {
+    try 
+    {
+      if (searchText?.trim()?.length > 0) 
+      {
         let { data } = await axios.get(
           `/user/get-users/search?&query=${searchText}`
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setUserData(data.users);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
       }
     } 
-    catch (error) {
+    catch (error) 
+    {
       console.log("Error getting forms", error);
     }
   };
 
   useEffect(() => {
     const getUsers = async () => {
-      try {
+      try 
+      {
         setLoading(true);
         const { data } = await axios.get(
           `/user/get-users?page=${page}&limit=${PAGE_LIMIT}`
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setUserData(data.users);
           setUsersCount(data.usersCount);
         } 
-        else {
+        else 
+        {
           toast.error(data.error);
         }
         setLoading(false);
@@ -116,56 +129,68 @@ const Users = () => {
   }, [page, PAGE_LIMIT, reloadData]);
 
   const deleteUserHandler = async (id?: string) => {
-    try {
+    try 
+    {
       const { data } = await axios.post(`/user/delete-user`, {
         id,
       });
-      if (!data.error) {
+      if (!data.error)
+      {
         toast.success(data.message);
         const { data: users } = await axios.get(
           `/user/get-users?page=${page}&limit=${PAGE_LIMIT}`
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setUserData(users.users);
           setUsersCount(users.usersCount);
         } 
-        else {
+        else 
+        {
           toast.error(data.error);
         }
       } 
-      else {
+      else
+      {
         toast.error(data.error);
       }
     } 
-    catch (error: any) {
+    catch (error: any) 
+    {
       toast.error(error.message);
       console.log(error);
     }
   };
 
   const updateStatusHandler = async (id?: string) => {
-    try {
+    try 
+    {
       const { data } = await axios.post(`/user/update-user-status`, {
         id,
       });
-      if (!data.error) {
+      if (!data.error) 
+      {
         toast.success(data.message);
         const { data: users } = await axios.get(
           `/user/get-users?page=${page}&limit=${PAGE_LIMIT}`
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setUserData(users.users);
           setUsersCount(users.usersCount);
         } 
-        else {
+        else 
+        {
           toast.error(data.error);
         }
       } 
-      else {
+      else 
+      {
         toast.error(data.error);
       }
     } 
-    catch (error: any) {
+    catch (error: any) 
+    {
       toast.error(error.message);
       console.log(error);
     }
@@ -173,17 +198,21 @@ const Users = () => {
 
   const handleDownload = async () => {
     const getUsersForDownload = async () => {
-      try {
+      try 
+      {
         const { data } = await axios.get(`/user/get-users`);
-        if (!data.error) {
+        if (!data.error) 
+        {
           return data.users;
         } 
-        else {
+        else 
+        {
           toast.error(data.error);
           return;
         }
       } 
-      catch (error: any) {
+      catch (error: any) 
+      {
         toast.error(error.message);
         console.log(error);
       }
