@@ -8,9 +8,9 @@ interface Props {
 
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import axios from "@/utils/axios";
 import React, { useState, useEffect, useRef } from "react";
 import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
+import axios from "@/utils/axios";
 
 const EditLead = ({
   setLeadData,
@@ -50,7 +50,6 @@ const EditLead = ({
         {
           toast.error("Please fill all the fields");
         }
-
         return;
       }
     });
