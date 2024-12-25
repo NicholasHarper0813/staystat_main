@@ -1,7 +1,10 @@
-interface Props {
-  hotel?: {
+interface Props 
+{
+  hotel?: 
+  {
     _id: string;
-    addedBy: {
+    addedBy: 
+    {
       _id: string;
       role: string;
     };
@@ -14,7 +17,8 @@ interface Props {
     aadharNumber?: string;
     tradeLicense?: string;
     otherDocuments?: string;
-    ownerContact?: {
+    ownerContact?: 
+    {
       email?: string;
       phone?: string;
     };
@@ -32,11 +36,11 @@ interface Props {
   setShowEditHotelModal: (value: boolean) => void;
 }
 
-import { FaTimes } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
+import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
+import { FaTimes } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 
 const ViewHotel = ({
   hotel,
