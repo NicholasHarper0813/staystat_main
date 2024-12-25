@@ -4,19 +4,19 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { RiMenu2Fill, RiMenuUnfoldFill } from "react-icons/ri";
 import { MdLogout } from "react-icons/md";
+import { ThemeProvider } from "next-themes";
 import Image from "next/image";
 import Switcher from "../mode/Switcher";
-import { ThemeProvider } from "next-themes";
-// import Breadcrumbs from "./Breadcrumbs";
 import profileImage from "../../../public/assets/avatar01.png";
 import axios from "@/utils/axios";
 import axios_ from "axios";
 
-interface NavbarProps {
+interface NavbarProps 
+{
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
-//❌
+
 const events: any = [
   "load",
   "mousemove",
@@ -36,7 +36,6 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
   }, []);
 
   const profileDropdownRef = useRef(null);
-
   const toggleDropdown = () => {
     setIsProfileDropDownOpen(!isProfileDropDownOpen);
   };
@@ -62,11 +61,8 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
-      if (
-        profileDropdownRef.current &&
-        // @ts-ignore
-        !profileDropdownRef.current.contains(event.target)
-      ) {
+      if ( profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) 
+      {
         setIsProfileDropDownOpen(false);
       }
     };
@@ -81,24 +77,18 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }: NavbarProps) => {
   const resetTimer = () => {
     if (timer) clearTimeout(timer);
   };
-  //❌
+  
   const handleLogoutTimer = () => {
-    //@ts-ignore
     timer = setTimeout(() => {
-      // clears any pending timer.
       resetTimer();
-      // Listener clean up. Removes the existing event listener from the window
       Object.values(events).forEach((item): any => {
-        // @ts-ignore
         window.removeEventListener(item, resetTimer);
       });
-      // logs out user
       logoutAction("INACTIVITY LOGOUT");
-    }, 500000); // 10000ms = 10secs.
+    }, 500000);
   };
   useEffect(() => {
     Object.values(events).forEach((item) => {
-      // @ts-ignore
       window.addEventListener(item, () => {
         resetTimer();
         handleLogoutTimer();
