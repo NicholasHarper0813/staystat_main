@@ -2,13 +2,15 @@
   "name": "stay-stats",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+  "scripts": 
+  {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
-  "dependencies": {
+  "dependencies": 
+  {
     "@nextui-org/react": "^2.4.2",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -61,7 +63,8 @@
     "validator": "^13.12.0",
     "xlsx": "^0.18.5"
   },
-  "devDependencies": {
+  "devDependencies": 
+  {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-date-range": "^1.4.9",
