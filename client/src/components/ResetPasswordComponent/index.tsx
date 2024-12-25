@@ -2,19 +2,19 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "@/utils/axios";
 import validator from "validator";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
 import Image from "next/image";
+import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
 import { motion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
 import { MdOutlineDoneAll, MdNoEncryptionGmailerrorred } from "react-icons/md";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import { BiError } from "react-icons/bi";
 import { useSearchParams, useRouter } from "next/navigation";
-import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
 import { BASE_URL, FRONTEND_URL } from "@/constants/constant";
 import { InfinitySpin } from "react-loader-spinner";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const AnimatedImage = motion(Image);
 
 const ResetPasswordForm = () => {
@@ -30,18 +30,18 @@ const ResetPasswordForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(false);
-
   const [authorizationError, setAuthorizationError] = useState("");
-
   const router = useRouter();
 
   useEffect(() => {
-    if (!userId || !token) {
+    if (!userId || !token) 
+    {
       setAuthorizationError("Broken Link");
     }
 
     const checkToken = async () => {
-      try {
+      try 
+      {
         setChecking(true);
         const { data: response } = await axios.post(
           "/api/reset-password-validation",
@@ -51,13 +51,18 @@ const ResetPasswordForm = () => {
           }
         );
         setLoading(false);
-        if (!response.error) {
+        if (!response.error)
+        {
           setAuthorizationError("");
-        } else {
+        } 
+        else 
+        {
           setAuthorizationError(response.error);
         }
         setChecking(false);
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         toast.error("Something went wrong");
         toast.error(error.message);
         setAuthorizationError(error.message);
@@ -70,12 +75,14 @@ const ResetPasswordForm = () => {
   const resetPassword = async (event: any) => {
     event.preventDefault();
 
-    if (password !== reEnteredPassword) {
+    if (password !== reEnteredPassword) 
+    {
       setErrorMessage("Passwords do not match");
       return;
     }
 
-    if (!validator.isStrongPassword(password)) {
+    if (!validator.isStrongPassword(password)) 
+    {
       setErrorMessage("Please is not strong enough");
       return;
     }
@@ -83,7 +90,8 @@ const ResetPasswordForm = () => {
     let userId = searchParams.get("id");
     let token = searchParams.get("token");
 
-    try {
+    try 
+    {
       setLoading(true);
       const { data: response } = await axios.post("/api/reset-password", {
         password,
@@ -91,20 +99,25 @@ const ResetPasswordForm = () => {
         token,
       });
       setLoading(false);
-      if (!response.error) {
+      if (!response.error)
+      {
         toast.success(response.message);
         setSuccessMessage(response.message);
         setPassword("");
         setReEnteredPassword("");
         setErrorMessage("");
         window.open(`${FRONTEND_URL}/login`, "_self");
-      } else {
+      } 
+      else
+      {
         toast.error(response.error);
         setErrorMessage(response.error);
         setSuccessMessage("");
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       toast.error("Maybe reset link is expired!");
       setAuthorizationError("Maybe reset link is expired!");
       setErrorMessage("Maybe reset link is expired!");
@@ -118,13 +131,15 @@ const ResetPasswordForm = () => {
     setShowReEnteredPassword(!showReEnteredPassword);
   };
 
-  if (checking) {
+  if (checking) 
+  {
     <div className=" m-auto">
       <InfinitySpin width="200" color="#4fa94d" />
     </div>;
   }
 
-  if (authorizationError !== "") {
+  if (authorizationError !== "") 
+  {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center relative ">
         <MdNoEncryptionGmailerrorred className="text-9xl text-red-500" />
@@ -135,7 +150,8 @@ const ResetPasswordForm = () => {
     );
   }
 
-  if (authorizationError === "") {
+  if (authorizationError === "") 
+  {
     return (
       <div className="fade w-full h-screen flex flex-row items-center justify-center relative">
         <div className="bg-white hidden pr-16 lg:flex h-full w-full flex-col justify-center z-50 bg-[url('/assets/login_wave.svg')] bg-no-repeat bg-cover">
@@ -310,42 +326,3 @@ const ResetPasswordForm = () => {
 };
 
 export default ResetPasswordForm;
-
-// <div className="flex justify-center items-center h-screen">
-//   <form className="w-64 border rounded p-4 shadow-lg" onSubmit={loginHandler} >
-//     <div className="mb-4">
-//       <label htmlFor="username" className="block text-gray-700 font-bold mb-2">
-//         Username
-//       </label>
-//       <input
-//         ref={usernameRef}
-//         type="text"
-//         id="username"
-//         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-//         placeholder="Enter your username"
-//         required
-//       />
-//     </div>
-//     <div className="mb-4">
-//       <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-//         Password
-//       </label>
-//       <input
-//         ref={passwordRef}
-//         type="password"
-//         id="password"
-//         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-//         placeholder="Enter your password"
-//         required
-//       />
-//     </div>
-//     <div className="flex justify-center">
-//       <button
-//         type="submit"
-//         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-//       >
-//         Login
-//       </button>
-//     </div>
-//   </form>
-// </div>
