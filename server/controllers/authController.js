@@ -2,11 +2,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const generateJWT = require("../config/generateToken");
 const { User } = require("../models/userModel");
 const { Activity } = require("../models/activityModel");
 const { sendEmail } = require("../controllers/userController");
-const generateJWT = require("../config/generateToken");
-
 const FRONTEND_URL = process.env.FRONTEND_URL;
 const JWT_SECRET_PASSWORD_RESET = process.env.JWT_SECRET_PASSWORD_RESET;
 const signup = async (req, res) => {
@@ -32,7 +31,8 @@ const signup = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res) => 
+{
   const { username, password, ip } = req.body;
 
   try 
@@ -88,7 +88,8 @@ const forgotPasswordGenerateLink = async (req, res) => {
     }
 
     const secret = JWT_SECRET_PASSWORD_RESET + user.password;
-    const payload = {
+    const payload = 
+    {
       email: user.email,
       id: user._id,
     };
@@ -136,7 +137,8 @@ const forgotPasswordGenerateLink = async (req, res) => {
 
 const resetPasswordLinkValidation = async (req, res) => {
   let { id, token } = req.body;
-  try {
+  try 
+  {
     let user = await User.findById(id);
 
     if (!user)
