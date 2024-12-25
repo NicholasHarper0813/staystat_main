@@ -85,7 +85,6 @@ const EditBooking = ({
     const formattedDate = `${fullYear}-${month}-${day}`;
 
     setCheckInDate(formattedDate);
-
     setEditingBookingData((prev: any) => {
       return { ...prev, checkInDate: formattedDate };
     });
@@ -94,13 +93,14 @@ const EditBooking = ({
   const handleCheckOutDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputDate = e.target.value;
     const [year, month, day] = inputDate.split("-");
-
-    let fullYear = year;
     const currentYear = new Date().getFullYear().toString();
-
-    if (year.toString().slice(0, 3) !== "000") {
+    let fullYear = year;
+    
+    if (year.toString().slice(0, 3) !== "000") 
+    {
       fullYear = `20${year.toString().slice(-2)}`;
-      if (fullYear.slice(-2) !== currentYear.slice(-2)) {
+      if (fullYear.slice(-2) !== currentYear.slice(-2)) 
+      {
         toast.warning("Check-Out Date does not match the current year !!");
         toast.clearWaitingQueue();
       }
@@ -109,7 +109,6 @@ const EditBooking = ({
     const formattedDate = `${fullYear}-${month}-${day}`;
 
     setCheckOutDate(formattedDate);
-
     setEditingBookingData((prev: any) => {
       return { ...prev, checkOutDate: formattedDate };
     });
@@ -118,13 +117,14 @@ const EditBooking = ({
   const handleAdvanceDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputDate = e.target.value;
     const [year, month, day] = inputDate.split("-");
-
-    let fullYear = year;
     const currentYear = new Date().getFullYear().toString();
-
-    if (year.toString().slice(0, 3) !== "000") {
+    let fullYear = year;
+    
+    if (year.toString().slice(0, 3) !== "000") 
+    {
       fullYear = `20${year.toString().slice(-2)}`;
-      if (fullYear.slice(-2) !== currentYear.slice(-2)) {
+      if (fullYear.slice(-2) !== currentYear.slice(-2)) 
+      {
         toast.warning("Advance Date does not match the current year !!");
         toast.clearWaitingQueue();
       }
@@ -146,8 +146,10 @@ const EditBooking = ({
 
     formData.forEach((value, key) => {
       formValues[key] = value as string;
-      if (formValues[key].trim() === "") {
-        if (key !== "remark" && key !== "guestEmail") {
+      if (formValues[key].trim() === "") 
+      {
+        if (key !== "remark" && key !== "guestEmail") 
+        {
           toast.error("Please fill all the fields");
         }
         return;
