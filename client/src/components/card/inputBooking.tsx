@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import axios from "@/utils/axios";
 import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
+import axios from "@/utils/axios";
+import { toast } from "react-toastify";
 
-interface BookingProps {
+interface BookingProps 
+{
   user: any;
   setBookingData: (users: any) => void;
   onClose: (value: boolean) => void;
@@ -22,10 +23,8 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
   const [availableHotels, setAvailableHotels] = useState<any>([]);
   const [selectedHotelOption, setSelectedHotelOption] = useState("--Choose--");
   const [selectedPlanOption, setSelectedPlanOption] = useState("--Choose--");
-  const [selectedSourceOption, setSelectedSourceOption] =
-    useState("--Choose--");
-  const [selectedAccountOption, setSelectedAccountOption] =
-    useState("--Choose--");
+  const [selectedSourceOption, setSelectedSourceOption] = useState("--Choose--");
+  const [selectedAccountOption, setSelectedAccountOption] = useState("--Choose--");
 
   useEffect(() => {
     const getHotels = async () => {
@@ -218,7 +217,6 @@ const InputBooking = ({ user, setBookingData, onClose }: BookingProps) => {
 
     if (!formValues.paymentby || formValues.paymentby.trim() === "") 
     {
-      // console.log("formValues.bookingSource", formValues.paymentby);
       toast.error("Please enter a valid booking source");
       return;
     }
