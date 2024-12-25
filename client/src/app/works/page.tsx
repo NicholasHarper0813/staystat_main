@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import axios from "@/utils/axios";
+import { ToastContainer, toast } from "react-toastify";
 import { FaPlus } from "react-icons/fa";
 import { fetchOwner } from "@/utils";
 import { useRouter } from "next/navigation";
@@ -11,8 +11,8 @@ import { CiSquareRemove } from "react-icons/ci";
 import WorksTable from "@/components/Table/WorksTable";
 import InputWork from "@/components/card/inputWork";
 import ViewWorks from "@/components/card/ViewWorks";
-import { FRONTEND_URL } from "@/constants/constant";
 import EditWorks from "@/components/card/EditWorks";
+import { FRONTEND_URL } from "@/constants/constant";
 
 const Works = () => {
   const router = useRouter();
@@ -30,7 +30,6 @@ const Works = () => {
   const [reloadData, setReloadData] = useState<boolean>(false);
   const [showEditWorkModal, setShowEditWorkModal] = useState<boolean>(false);
   const [editingWorkData, setEditingWorkData] = useState<object>({});
-  // console.log("workData is Here :)", workData);
   useEffect(() => {
     if (showModal || showViewModal) {
       document.body.style.overflow = "hidden";
@@ -59,41 +58,52 @@ const Works = () => {
 
   const getWorksBySearch = async (e?: any) => {
     e && e.preventDefault();
-    try {
-      if (searchText?.trim()?.length > 0) {
+    try 
+    {
+      if (searchText?.trim()?.length > 0) 
+      {
         let { data } = await axios.get(
           `/work/get-all-works/search?&query=${searchText}`
         );
         console.log("users", data);
-        if (!data.error) {
-          // setSearchResults(data);
+        if (!data.error) 
+        {
           setWorkData(data.works);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
       }
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.log("Error getting forms", error);
     }
   };
 
   useEffect(() => {
     const getHotels = async () => {
-      try {
+      try
+      {
         setLoading(true);
         const { data } = await axios.get(
           `/work/get-all-works?page=${page}&limit=${PAGE_LIMIT}`
         );
         console.log(data);
-        if (!data.error) {
-
+        if (!data.error) 
+        {
           setWorkData(data.works);
           setWorksCount(data.worksCount);
-        } else {
+        }
+        else 
+        {
           toast.error(data.error);
         }
         setLoading(false);
-      } catch (error: any) {
+      } 
+      catch (error: any) 
+      {
         setLoading(false);
         toast.error(error.message);
         console.log(error);
@@ -111,62 +121,80 @@ const Works = () => {
       id.trim() === "" ||
       workConfirm.trim() === "" ||
       remarks.trim() === ""
-    ) {
+    ) 
+    {
       toast.error("Please fill all the fields");
       return;
     }
 
-    try {
+    try 
+    {
       const { data } = await axios.post("/work/update-status", {
         id,
         workConfirm,
         remarks,
       });
-      if (!data.error) {
+      if (!data.error) 
+      {
         toast.success(data.message);
         const { data: users } = await axios.get(
           `/work/get-all-works?page=${page}&limit=${PAGE_LIMIT}`
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setWorkData(users.works);
           setWorksCount(data.worksCount);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
-      } else {
+      } 
+      else
+      {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       toast.error(error.message);
     }
   };
 
   const deleteWorkHandler = async (id: string) => {
-    try {
+    try 
+    {
       const { data } = await axios.post(`/work/delete-work`, {
         workId: id,
       });
-      if (!data.error) {
+      if (!data.error) 
+      {
         toast.success(data.message);
         const { data: users } = await axios.get(
           `/work/get-all-works?page=${page}&limit=${PAGE_LIMIT}`
         );
-        if (!data.error) {
+        if (!data.error) 
+        {
           setWorkData(users.works);
           setWorksCount(data.worksCount);
-        } else {
+        } 
+        else 
+        {
           toast.error(data.error);
         }
-      } else {
+      } 
+      else 
+      {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       toast.error(error.message);
       console.log(error);
     }
   };
 
-  // @ts-ignore
   return (
     <div className="flex w-full flex-col justify-center gap-4 items-center">
       <div className="flex w-full justify-between mt-6">
