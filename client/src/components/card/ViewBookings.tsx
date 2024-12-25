@@ -1,14 +1,16 @@
 import { Button } from "@nextui-org/react";
 import { FaTimes, FaUndo } from "react-icons/fa";
-import React, { useState } from "react";
 import { FiEdit } from "react-icons/fi";
-import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 import { Send } from "lucide-react";
-import axios from "@/utils/axios";
 import { toast } from "react-toastify";
+import React, { useState } from "react";
+import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
+import axios from "@/utils/axios";
 
-interface Props {
-  booking: {
+interface Props 
+{
+  booking: 
+  {
     _id: string;
     hotel: {
       hotelName: string;
@@ -50,12 +52,10 @@ const ViewBooking = ({
   const [showDeletePopup, setShowDeletePopUp] = useState<boolean>(false);
   const [showUndoDeletePopup, setShowUndoDeletePopUp] =
     useState<boolean>(false);
-  // console.log(booking, "userdata");
   const [isSending, setIsSending] = useState(false);
   const handleShowDeleteModal = (event: any) => {
     event.preventDefault();
     setShowDeletePopUp(true);
-    // onClose(false)
   };
 
   const handleShowUndoDeleteModal = (event: any) => {
@@ -66,16 +66,21 @@ const ViewBooking = ({
     setIsSending(true);
     const message = `Dear ${booking.guestName}, your booking at ${booking.hotel.hotelName} has been ${booking.status}. Your check-in is scheduled for ${booking.checkInDate}, and check-out is on ${booking.checkOutDate}. You have booked ${booking.numberOfRooms} rooms for ${booking.numberOfPersons} guests. The booking amount is ₹${booking.bookingAmount}, with an advance payment of ₹${booking.advanceAmount}. The due amount is ₹${booking.dueAmount}. You have chosen the ${booking.plan} plan. Your contact number is ${booking.contactNumber}. Thank you for choosing ${booking.hotel.hotelName}. For any assistance, you can reach out to us at "+91 97483 14053".`;
 
-    try {
+    try 
+    {
       await axios.post("/send-sms", {
         to: "+91" + booking?.contactNumber,
         body: message,
       });
       toast.success("SMS sent successfully");
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error("Error sending SMS:", error);
       toast.error("Failed to send SMS");
-    } finally {
+    } 
+    finally 
+    {
       setIsSending(false);
     }
   };
@@ -94,22 +99,6 @@ const ViewBooking = ({
             </span>
           </div>
           <div className="grid gap-2 grid-cols-3  md:grid-cols-3">
-            {/* <div>
-            <label
-              htmlFor="hotel"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Hotel Name
-            </label>
-            <input
-              type="text"
-              id="hotel"
-              name="hotel"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Ex: Digha Saikatabas"
-              required
-            />
-          </div> */}
             <div>
               <label
                 htmlFor="hotel"
