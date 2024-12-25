@@ -6,7 +6,8 @@ const moment = require("moment");
 const Sequence = require("../models/sequenceModel");
 const ObjectId = mongoose.Types.ObjectId;
 
-const getBooking = async (req, res) => {
+const getBooking = async (req, res) => 
+{
   const { bookingId } = req.body;
   try
   {
@@ -34,7 +35,6 @@ const saveCustomBookingData = async (req, res) => {
   try 
   {
     const jsonData = req.body;
-
     if (!jsonData || !Array.isArray(jsonData)) 
     {
       return res.status(400).json({ message: "Invalid JSON data" });
@@ -74,7 +74,8 @@ const saveCustomBookingData = async (req, res) => {
       const bookingAmount = parseFloat(bookingData["Booking Amount"]);
       const advanceAmount = parseFloat(bookingData["Advance Amount"]);
       const dueAmount = bookingAmount - advanceAmount;
-      const formattedBooking = {
+      const formattedBooking = 
+      {
         hotel: hotelId,
         serialNumber: serialNumber.toString(),
         guestName: bookingData["Guest Name"],
@@ -180,28 +181,32 @@ const getAllBookings = async (req, res) => {
     {
       if (filterBy === "checkInDate") 
       {
-        filter.checkInDate = {
+        filter.checkInDate = 
+        {
           $gte: new Date(startDate),
           $lte: new Date(endDate),
         };
       } 
       else if (filterBy === "checkOutDate") 
       {
-        filter.checkOutDate = {
+        filter.checkOutDate = 
+        {
           $gte: new Date(startDate),
           $lte: new Date(endDate),
         };
       } 
       else if (filterBy === "createdAt") 
       {
-        filter.createdAt = {
+        filter.createdAt = 
+        {
           $gte: new Date(startDate),
           $lte: new Date(endDate),
         };
       } 
       else if (filterBy === "updatedAt") 
       {
-        filter.updatedAt = {
+        filter.updatedAt = 
+        {
           $gte: new Date(startDate),
           $lte: new Date(endDate),
         };
@@ -209,7 +214,8 @@ const getAllBookings = async (req, res) => {
       else if (filterBy === "status") 
       {
         status = "CANCELLED";
-        filter.updatedAt = {
+        filter.updatedAt = 
+        {
           $gte: new Date(startDate),
           $lte: new Date(endDate),
         };
@@ -332,14 +338,14 @@ const getAllBookingsBySearch = async (req, res) => {
     const regex = new RegExp(escapeRegex(query), "gi");
     const bookings = await Booking.find(filter)
       .or([
-        { guestName: regex }, // Search for bookings with guentName matching the provided regex
+        { guestName: regex },
         { contactNumber: regex },
         {
           hotel: {
             $in: await Hotel.find({
               $or: [
-                { hotelName: regex }, // Search for hotels with hotelName matching the provided regex
-                { location: regex }, // Search for hotels with location matching the provided regex
+                { hotelName: regex },
+                { location: regex },
               ],
             }).distinct("_id"),
           },
