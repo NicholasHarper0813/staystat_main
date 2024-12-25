@@ -227,7 +227,6 @@ const WorksTable = ({
                       return (
                         <tr
                         onClick={() => {
-                          // console.log( work);
                           getWork(work);
                           setShowModal(true);
                         }}
@@ -345,7 +344,6 @@ const WorksTable = ({
                   statusUpdateHandler(workId, action, remarks);
                   setShowRemarksPopup(false);
                   setRemarks("")
-                  
                 }}
                 className="text-sm text-blue-500"
               >
