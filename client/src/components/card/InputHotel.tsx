@@ -128,12 +128,14 @@ const InputHotel = ({ setHotelData, onClose }: Props) => {
           signature: sign.signature,
         },
       );
-      if (fileUrl) {
+      if (fileUrl) 
+      {
         const { data } = await axios.post("/hotel/create-hotel", {
           hotelName: formValues.hotelName,
           location: formValues.location,
           ownerName: formValues.ownerName,
-          ownerContact: {
+          ownerContact: 
+          {
             phone: formValues.phoneNumber,
             email: formValues.email ?? "",
           },
