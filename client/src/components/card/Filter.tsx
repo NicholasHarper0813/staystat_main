@@ -11,7 +11,8 @@ type Props = {
   setStayColor: any;
   setFilterData: any;
   isFilterOpen: boolean;
-  bookingStats: {
+  bookingStats: 
+  {
     totalBookingAmt: number;
     totalAdvanceAmt: number;
     totalDueAmt: number;
@@ -28,7 +29,6 @@ const Filter = ({
   const [hotels, setHotels] = React.useState<any>([]);
   const [users, setUsers] = React.useState<any>([]);
   console.log(JSON.stringify(usersData.hotel) + "main-users");
-
   const [filter, setFilter] = useState({
     guestName: "",
     hotelName: "--select--",
@@ -39,7 +39,6 @@ const Filter = ({
     addedBy: "--select--",
     dateRange: {},
   });
-
   const [stayHotels, setStayHotels] = useState({
     hotelName: "--select--",
   });
@@ -86,7 +85,6 @@ const Filter = ({
     endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
 
     setSelectionRange({ startDate, endDate, key: "selection" });
-
     setFilter({
       ...filter,
       dateRange: {
@@ -115,7 +113,8 @@ const Filter = ({
   };
 
   console.log(stayHotels.hotelName + "selected hotel");
-  if (isFilterOpen) {
+  if (isFilterOpen) 
+  {
     return (
       <>
         <div className="rounded-md w-full flex-wrap flex justify-start items-start p-4 flex-col">
