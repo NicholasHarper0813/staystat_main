@@ -25,7 +25,6 @@ interface TableProps {
     panNumber?: string;
     aadharNumber?: string;
     tradeLicense?: string;
-
     frontOfficeContact?: string;
   }[];
   setHotelData: any;
@@ -110,10 +109,6 @@ const HotelTable = ({
               <th scope="col" className="px-6 py-3 text-center">
                 Trade License Number
               </th>
-
-              {/* <th scope="col" className="px-6 py-3 text-center">
-                Options
-              </th> */}
             </tr>
           </thead>
           <tbody className="rounded-xl dark:text-white">
