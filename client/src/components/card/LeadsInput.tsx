@@ -2,12 +2,13 @@
 import axios from "@/utils/axios";
 import Select from "react-select";
 import React, { useState, useEffect, useRef } from "react";
+import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 import { RiEyeLine, RiEyeCloseLine } from "react-icons/ri";
 import { FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
-import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 
-interface Props {
+interface Props 
+{
   setLeadsData: (lead: any) => void;
   onClose: (value: boolean) => void;
 }
@@ -23,11 +24,12 @@ const LeadsInput = ({ setLeadsData, onClose }: Props) => {
     const formData = new FormData(event.currentTarget);
     const formValues: { [key: string]: string } = {};
 
-    // Collect all the form field values
     formData.forEach((value, key) => {
       formValues[key] = value as string;
-      if (formValues[key].trim() === "") {
-        if(key !== "specialReq"){
+      if (formValues[key].trim() === "") 
+      {
+        if(key !== "specialReq")
+        {
           toast.error("Please fill all the fields");
         }
         return;
@@ -37,7 +39,8 @@ const LeadsInput = ({ setLeadsData, onClose }: Props) => {
     const numberRegex = /^[0-9]+$/;
     const nameRegex = /^[a-zA-Z ]+$/;
 
-    if (formValues.cn.length !== 10) {
+    if (formValues.cn.length !== 10) 
+    {
       toast.error("Please enter a valid phone number and don't include +91");
       return;
     }
@@ -45,13 +48,15 @@ const LeadsInput = ({ setLeadsData, onClose }: Props) => {
     if (
       formValues.guest_name.trim() == "" ||
       !nameRegex.test(formValues.guest_name)
-    ) {
+    )
+    {
       toast.error("Please enter a valid name");
       return;
     }
 
 
-    try {
+    try 
+    {
       setLoading(true);
       const { data } = await axios.post("/leads/create-lead", {
         guestName: formValues.guest_name,
@@ -65,8 +70,8 @@ const LeadsInput = ({ setLeadsData, onClose }: Props) => {
         specialRequirements: formValues.specialReq,
         status: "PENDING",
       });
-      if (!data.error) {
-        // const { data } = await axios.post("/user/get-users");
+      if (!data.error) 
+      {
         setLeadsData((prev: any) => {
           return [data.lead, ...prev];
         });
@@ -74,11 +79,15 @@ const LeadsInput = ({ setLeadsData, onClose }: Props) => {
 
         toast.success(data.message);
         formRef.current?.reset();
-      } else {
+      } 
+      else 
+      {
         toast.error(data.error);
       }
       setLoading(false);
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       setLoading(false);
       console.log(error);
       toast.error(error.message);
