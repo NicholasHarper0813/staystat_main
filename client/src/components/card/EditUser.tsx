@@ -9,7 +9,8 @@ import { MdAutoFixHigh } from "react-icons/md";
 import generator from "generate-password";
 import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 
-interface Props {
+interface Props 
+{
   setUserData: (users: any) => void;
   onClose: (value: boolean) => void;
   editingUserDataProps: any;
@@ -34,9 +35,11 @@ const EditUser = ({
   useEffect(() => {
     const getHotelsAndUser = async () => {
       setLoading(true);
-      try {
+      try 
+      {
         const { data } = await axios.post("/hotel/get-all-hotels");
-        if (!data.error) {
+        if (!data.error) 
+        {
           setAvailableHotels(data.hotels);
           let options = data.hotels.map((hotel: any) => {
             return { value: hotel._id, label: hotel.hotelName };
