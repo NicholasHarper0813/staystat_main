@@ -19,7 +19,8 @@ const Switcher = () => {
     useEffect(() => {
         setMounted(true);
     }, []);
-    if (!mounted) {
+    if (!mounted) 
+    {
         return null;
     }
     return (
