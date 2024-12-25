@@ -118,9 +118,6 @@ const BookingTable = ({
               <th scope="col" className="px-6 py-3">
                 Modification Date
               </th>
-              {/* <th scope="col" className="px-4 text-center py-3">
-                OPTIONS
-              </th> */}
             </tr>
           </thead>
           <tbody className="rounded-xl dark:text-white">
