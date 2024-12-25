@@ -1,11 +1,10 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
-import axios from "@/utils/axios";
-import validator from "validator";
 import Link from "next/link";
 import Image from "next/image";
-import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../loadingSpinner/LoadingSpinner";
+import axios from "@/utils/axios";
+import validator from "validator";
 import { motion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
 import { MdOutlineDoneAll } from "react-icons/md";
@@ -14,6 +13,7 @@ import { BiError } from "react-icons/bi";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import { BASE_URL, FRONTEND_URL } from "@/constants/constant";
+import "react-toastify/dist/ReactToastify.css";
 const AnimatedImage = motion(Image);
 
 const ForgotPasswordRequest = () => {
@@ -81,7 +81,6 @@ const ForgotPasswordRequest = () => {
             perspective: "1000px",
             boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
             borderRadius: "10px",
-            
           }}
           animate={{
             rotateY: ["-10deg", "10deg", "-10deg"],
