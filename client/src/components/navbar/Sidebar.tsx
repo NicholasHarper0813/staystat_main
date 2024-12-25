@@ -17,10 +17,11 @@ import {
 import { fetchOwner } from "@/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import Image from "next/image";
 import { FRONTEND_URL } from "@/constants/constant";
+import Image from "next/image";
 
-interface SidebarProps {
+interface SidebarProps 
+{
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
 }
@@ -38,15 +39,17 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
     let userId = JSON.parse(localStorage.getItem("user") || "{}")?._id;
     let updateUser = async () => {
       const user = await fetchOwner(userId);
-      if (user && user._id && user.isActive) {
+      if (user && user._id && user.isActive) 
+      {
         setOwner(user);
         localStorage.setItem("user", JSON.stringify(user));
         setAccountType(user?.role);
-      } else {
+      }
+      else 
+      {
         toast.error("You are not authorized to view this page");
         localStorage.removeItem("user");
         localStorage.removeItem("authToken");
-
         window.open(`${FRONTEND_URL}/login`, "_self");
       }
     };
@@ -58,7 +61,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
   }, [isSidebarOpen]);
 
   const navHoverEffectEnter = () => {
-    if (isSidebarOpen) {
+    if (isSidebarOpen) 
+    {
       return;
     }
     setHover(true);
@@ -73,8 +77,6 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
       initial={{ width: 0 }}
       animate={{ width: !isNavOpen ? "220px" : "auto" }}
       transition={{ duration: 0.3 }}
-      // onMouseEnter={navHoverEffectEnter}
-      // onMouseLeave={navHoverEffectOut}
       className={`overflow-hidden h-screen ${
         isNavOpen ? "w-auto fixed lg:relative" : "w-[220px] fixed lg:relative z-20"
       } bg-white dark:bg-[#282f46] border border-r dark:border-gray-300/25 border-gray-600/25 pt-4`}
