@@ -83,18 +83,6 @@ const Table = ({
               <th scope="col" className="px-4 py-3 text-center">
                 Email
               </th>
-              {/* <th scope="col" className="px-6 py-3">
-              Password
-            </th> */}
-              {/* <th scope="col" className="px-6 py-3">
-              Hotel
-            </th> */}
-              {/* <th scope="col" className="px-4 py-3 text-center">
-                Role
-              </th> */}
-              {/* <th scope="col" className="px-4 py-3 text-center">
-                Options
-              </th> */}
             </tr>
           </thead>
           <tbody className="rounded-xl dark:text-white">
