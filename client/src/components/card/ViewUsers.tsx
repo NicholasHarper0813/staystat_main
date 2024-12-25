@@ -1,5 +1,7 @@
-interface Props {
-  user?: {
+interface Props 
+{
+  user?: 
+  {
     _id?: string;
     isActive?: boolean;
     addedBy?: any;
@@ -7,7 +9,8 @@ interface Props {
     email?: string;
     phoneNumber?: string;
     role?: string;
-    hotel?: {
+    hotel?: 
+    {
       _id: string;
       hotelName: string;
     }[];
