@@ -1,6 +1,6 @@
 import React from "react";
-import Dashboard from "@/components/dash/Dashboard";
 import AdminProtector from "@/Protector/Admin";
+import Dashboard from "@/components/dash/Dashboard";
 
 const Page = () => {
     return (
