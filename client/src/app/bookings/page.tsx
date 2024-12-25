@@ -1,14 +1,14 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import { FaCloudUploadAlt, FaPlus, FaTimes } from "react-icons/fa";
-import { utils, writeFile } from "xlsx";
-import * as xlsx from "xlsx";
 import BookingTable from "@/components/Table/BookingTable";
 import axios from "@/utils/axios";
 import InputBooking from "@/components/card/inputBooking";
 import ViewBooking from "@/components/card/ViewBookings";
 import EditBooking from "@/components/card/EditBooking";
 import Filter from "@/components/card/Filter";
+import * as xlsx from "xlsx";
+import { FaCloudUploadAlt, FaPlus, FaTimes } from "react-icons/fa";
+import { utils, writeFile } from "xlsx";
 import { toast, ToastContainer } from "react-toastify";
 import { fetchOwner } from "@/utils";
 import { FcNext, FcPrevious } from "react-icons/fc";
@@ -35,7 +35,8 @@ import {
 import XlsxTable from "@/components/ui/custom/xlsx-table/xlsx-table";
 import XlsxDangerModal from "@/components/ui/custom/xlsx-table/modal/xlsx-danger-modal";
 import Context from "@/context/Context";
-import {
+import 
+{
   Calendar as CalendarIcon,
   FolderDown,
   Home,
@@ -43,16 +44,19 @@ import {
   RotateCcw,
   Save,
 } from "lucide-react";
-import {
+import 
+{
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
+import 
+{
   Select as NextUISelect,
   SelectItem as NextUISelectItem,
 } from "@nextui-org/select";
-import {
+import 
+{
   Select,
   SelectContent,
   SelectItem,
@@ -104,7 +108,6 @@ const Bookings = () => {
     let userId = JSON.parse(localStorage.getItem("user") || "{}")?._id;
     let updateUser = async () => {
       const user = await fetchOwner(userId);
-
       if (user && user._id && user.isActive) 
       {
         setUser(user);
@@ -122,7 +125,6 @@ const Bookings = () => {
     };
     updateUser();
   }, []);
-
   const getBookingsBySearch = async (e?: any) => {
     setFilterData(null);
     e && e.preventDefault();
@@ -136,7 +138,6 @@ const Bookings = () => {
           params: { query: searchText },
           cacheTime: 5 * 60 * 1000,
         });
-
         if (!data.error)
         {
           setBookingData(data.bookings);
@@ -159,7 +160,6 @@ const Bookings = () => {
       try 
       {
         setLoading(true);
-
         const { data } = await axios.post(
           `/booking/get-all-bookings?page=${page}&limit=${PAGE_LIMIT}&filterBy=${filterData?.filterBy}&hotelName=${filterData?.hotelName}&bookingSource=${filterData?.bookingSource}&guestName=${filterData?.guestName}&serialNumber=${filterData?.serialNumber}&status=${filterData?.status}&addedBy=${filterData?.addedBy}`,
           {
@@ -173,7 +173,8 @@ const Bookings = () => {
           setBookingCounts(data.bookingsCount);
           setFilteredData(data.bookingsForCalculation);
           setBookingDataStats((prev: any) => {
-            return {
+            return 
+            {
               ...prev,
               totalBookingAmt: data.totalBookingAmt,
               totalAdvanceAmt: data.totalAdvanceAmt,
@@ -270,14 +271,18 @@ const Bookings = () => {
       {
         toast.error(data.error);
       }
-    } catch (error: any) {
+    } 
+    catch (error: any) 
+    {
       toast.error(error.message);
       console.log(error);
     }
   };
 
-  const handleDownload = async () => {
-    const getBookingsFordownload = async () => {
+  const handleDownload = async () => 
+  {
+    const getBookingsFordownload = async () => 
+    {
       try 
       {
         const { data } = await axios.post(
@@ -459,7 +464,6 @@ const Bookings = () => {
         }
 
         setXlsxFile(json);
-
         toast(() => (
           <>
             <strong>File uploaded</strong>
@@ -534,7 +538,8 @@ const Bookings = () => {
       hotelName: hotelName,
     }));
 
-    try {
+    try 
+    {
       const { data } = await axios.post(
         `/booking/get-all-bookings?page=${page}&limit=${PAGE_LIMIT}&filterBy=stay&hotelName=${hotelName}&bookingSource=${filterData?.bookingSource}&guestName=${filterData?.guestName}&serialNumber=${filterData?.serialNumber}&status=${filterData?.status}&addedBy=${filterData?.addedBy}`,
         {
@@ -560,9 +565,6 @@ const Bookings = () => {
   };
 
   console.log("bookingData", bookingData);
-
-  // console.log(JSON.stringify(xlsxFile) + "xlsxFile");
-
   const resetState = () => {
     setXlsxFile([]);
     setIsConfirmed(false);
