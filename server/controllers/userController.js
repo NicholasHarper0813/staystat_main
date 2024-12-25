@@ -25,11 +25,13 @@ const sendEmail = async (
   bodyTemplateText,
   bodyTemplateHtml
 ) => {
-  try {
+  try 
+  {
     const accessToken = await oAuth2Client.getAccessToken();
     const transport = nodemailer.createTransport({
       service: "gmail",
-      auth: {
+      auth: 
+      {
         type: "OAuth2",
         user: "freeproject87@gmail.com",
         clientId: CLIENT_ID,
@@ -39,7 +41,8 @@ const sendEmail = async (
       },
     });
 
-    const mailOptions = {
+    const mailOptions = 
+    {
       from: "STAY STATS ADMIN PANEL <freeproject87@gmail.com>",
       to: receiverEmail,
       subject: subject,
@@ -94,7 +97,8 @@ const getUser = async (req, res) => {
       res.status(200).json({ error: "No user found", user: {} });
       return;
     } 
-    else {
+    else 
+    {
       res.status(200).json({ user });
       return;
     }
@@ -126,14 +130,16 @@ const getUsers = async (req, res) => {
         .limit(query_limit)
         .populate({ path: "hotel", model: Hotel });
     } 
-    else {
+    else 
+    {
       users = await User.find({ role: "SUBADMIN" })
         .sort({ createdAt: -1 })
         .populate({ path: "hotel", model: Hotel });
     }
 
     let usersCount = await User.countDocuments({ role: "SUBADMIN" });
-    if (!users) {
+    if (!users) 
+    {
       res.status(200).json({
         error: "No users found",
         users: [],
@@ -141,12 +147,14 @@ const getUsers = async (req, res) => {
       });
       return;
     } 
-    else {
+    else 
+    {
       res.status(200).json({ users, usersCount: usersCount ?? 0 });
       return;
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log("Error: ", error);
     res.status(500).json({
       message: "Internal server error",
@@ -154,7 +162,8 @@ const getUsers = async (req, res) => {
   }
 };
 
-function escapeRegex(text) {
+function escapeRegex(text) 
+{
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
 
@@ -162,7 +171,8 @@ const getUsersBySearch = async (req, res) => {
   const { query } = req.query;
   console.log("[get users by search controller: =>]");
   console.log(req.query);
-  try {
+  try 
+  {
     const regex = new RegExp(escapeRegex(query), "gi");
     const users = await User.find()
       .or([
@@ -183,14 +193,16 @@ const getUsersBySearch = async (req, res) => {
         .json({ users, message: "No result found for this search" });
     }
   } 
-  catch (error) {
+  catch (error) 
+  {
     console.log(error);
     res.status(500).json({ error: error.message });
     throw new Error(error);
   }
 };
 
-const createUser = async (req, res) => {
+const createUser = async (req, res) => 
+{
   let { name, username, password, email, phoneNumber, role, hotel } = req.body;
 
   try 
