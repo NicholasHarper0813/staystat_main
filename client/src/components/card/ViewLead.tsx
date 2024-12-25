@@ -24,12 +24,11 @@ interface Props {
 }
 
 import Select from "react-select";
-
-import { FaTimes } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
+import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
 import { FiEdit } from "react-icons/fi";
 import { MdFileDownloadDone } from "react-icons/md";
-import TailwindWrapper from "../dash/Components/Wrapper/TailwindWrapper";
+import { FaTimes } from "react-icons/fa";
 
 const ViewLead = ({ lead, onClose,owner,confirmLeadHandler,setEditingLeadsData,setShowEditModal }: Props) => {
   const [updating, setUpdating] = useState<boolean>(false);
